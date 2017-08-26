@@ -1,19 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.sayhellototheworld.littlewatermelon.shareplan.EnterActivity">
 
-    <TextView
+    <com.sayhellototheworld.littlewatermelon.shareplan.customwidget.LiTopBar
+        android:id="@+id/activity_write_topbar"
+        android:layout_width="match_parent"
+        android:layout_height="100px"
+        app:bodyBackground="@color/white1"
+        app:leftImageSrc="@color/white1"
+        app:leftImageViewWidth="5px"
+        app:leftText="取消"
+        app:leftTextColor="#707070"
+        app:lefttextSize="15px"
+        app:rightImageSrc="@color/white1"
+        app:rightImageViewWidth="5px"
+        app:rightText="提交"
+        app:rightTextColor="#707070"
+        app:rightTextSize="14px"/>
+
+    <Button
+        android:id="@+id/test"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:text="test"/>
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

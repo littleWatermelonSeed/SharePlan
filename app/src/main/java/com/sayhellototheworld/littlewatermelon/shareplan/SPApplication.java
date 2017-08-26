@@ -3,6 +3,10 @@ package com.sayhellototheworld.littlewatermelon.shareplan;
 import android.app.Application;
 import android.content.Context;
 
+import org.litepal.LitePal;
+
+import cn.bmob.v3.Bmob;
+
 /**
  * Created by 123 on 2017/8/20.
  */
@@ -19,6 +23,21 @@ public class SPApplication extends Application {
 
     private void init(){
         appContext = getApplicationContext();
+        initBmob();
+        initLitepal();
+        initAutoLayout();
+    }
+
+    private void initAutoLayout(){
+//        AutoLayoutConifg.getInstance().useDeviceSize();
+    }
+
+    private void initBmob(){
+        Bmob.initialize(this,"a4fd16189837834c3b7f0f9faa0f519e");
+    }
+
+    private void initLitepal(){
+        LitePal.initialize(this);
     }
 
     public static Context getAppContext(){

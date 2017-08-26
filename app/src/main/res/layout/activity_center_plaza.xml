@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/activity_center_plaza_parent"
+    tools:context="com.sayhellototheworld.littlewatermelon.shareplan.view.centerplaza_view.CenterPlazaActivity">
+
+    <FrameLayout
+        android:id="@+id/activity_center_plaza_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/activity_center_plaza_cutoffLine">
+
+    </FrameLayout>
+
+    <View
+        android:id="@+id/activity_center_plaza_cutoffLine"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/white2"
+        android:layout_above="@+id/activity_center_plaza_bottomBar"/>
+
+    <LinearLayout
+        android:id="@+id/activity_center_plaza_bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="100px"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:alpha="0.8"
+        android:clipChildren="false"
+        android:background="@color/white1">
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/activity_center_plaza_bottomBar_home"
+                android:layout_width="65px"
+                android:layout_height="65px"
+                android:layout_gravity="center"
+                android:src="@drawable/activity_center_plaza_bottombar_home_disselected"/>
+
+            <TextView
+                android:id="@+id/activity_center_plaza_bottomBar_home_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="主页"
+                android:gravity="center"
+                android:textSize="20px"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="65px">
+
+                <ImageView
+                    android:id="@+id/activity_center_plaza_bottomBar_message"
+                    android:layout_width="65px"
+                    android:layout_height="65px"
+                    android:layout_gravity="center"
+                    android:src="@drawable/activity_center_plaza_bottombar_message_disselected"/>
+
+                <TextView
+                    android:id="@+id/activity_center_plaza_bottomBar_messageRemind"
+                    android:layout_width="35px"
+                    android:layout_height="35px"
+                    android:layout_gravity="right"
+                    android:gravity="center"
+                    android:textSize="15px"
+                    android:textColor="@color/white1"
+                    android:layout_marginRight="30px"
+                    android:visibility="gone"
+                    android:background="@drawable/activity_center_plaza_bottombar_messageremind"/>
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/activity_center_plaza_bottomBar_message_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="消息"
+                android:gravity="center"
+                android:textSize="20px"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/activity_center_plaza_bottomBar_write"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="80px"
+                android:layout_height="80px"
+                android:src="@drawable/activity_center_plaza_bottombar_write"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/activity_center_plaza_bottomBar_plan"
+                android:layout_width="65px"
+                android:layout_height="65px"
+                android:src="@drawable/activity_center_plaza_bottombar_plan_disselected"/>
+
+            <TextView
+                android:id="@+id/activity_center_plaza_bottomBar_plan_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="计划"
+                android:gravity="center"
+                android:textSize="20px"/>
+        </LinearLayout>
+
+        <LinearLayout
+
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/activity_center_plaza_bottomBar_user"
+                android:layout_width="65px"
+                android:layout_height="65px"
+                android:layout_gravity="center"
+                android:src="@drawable/activity_center_plaza_bottombar_user_disselected"/>
+
+            <TextView
+                android:id="@+id/activity_center_plaza_bottomBar_user_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="我"
+                android:gravity="center"
+                android:textSize="20px"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

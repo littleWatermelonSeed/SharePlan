@@ -20,11 +20,23 @@ android {
 }
 
 dependencies {
+
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+
+
+
     compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:support-v4:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.zhy:autolayout:1.4.5'
+    compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'org.litepal.android:core:1.6.0'
+    compile 'cn.bmob.android:bmob-sdk:3.5.5'
+    compile 'cn.bmob.android:bmob-push:0.8'
+    compile 'cn.bmob.android:bmob-im:2.0.5@aar'
+    compile 'cn.bmob.android:http-legacy:1.0'
     testCompile 'junit:junit:4.12'
 }
