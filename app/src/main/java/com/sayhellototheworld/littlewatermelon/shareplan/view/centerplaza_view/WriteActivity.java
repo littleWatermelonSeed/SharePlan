@@ -10,9 +10,9 @@ import android.widget.TextView;
 
 import com.sayhellototheworld.littlewatermelon.shareplan.R;
 import com.sayhellototheworld.littlewatermelon.shareplan.customwidget.LiTopBar;
-import com.sayhellototheworld.littlewatermelon.shareplan.view.base_activity.BaseStatusActivity;
+import com.sayhellototheworld.littlewatermelon.shareplan.view.base_activity.BaseSlideBcakStatusActivity;
 
-public class WriteActivity extends BaseStatusActivity implements View.OnClickListener{
+public class WriteActivity extends BaseSlideBcakStatusActivity implements View.OnClickListener{
 
     private LiTopBar mLiTopBar;
     private EditText editText_title;

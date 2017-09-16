@@ -1,4 +1,4 @@
-package com.sayhellototheworld.littlewatermelon.shareplan.view.centerplaza_view.centerplaza_interface;
+package com.sayhellototheworld.littlewatermelon.shareplan.my_interface.centerplaza_interface;
 
 /**
  * Created by 123 on 2017/8/25.

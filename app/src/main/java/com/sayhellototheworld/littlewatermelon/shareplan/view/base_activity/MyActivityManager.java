@@ -13,41 +13,43 @@ import java.util.Map;
 
 public class MyActivityManager {
     private static List<Activity> list;
-    private static Map<String,Activity> sMap;
+    private static Map<String, Activity> sMap;
 
     private static MyActivityManager destroyedAllActivity = null;
 
-    private MyActivityManager(){
+    private MyActivityManager() {
         list = new ArrayList<Activity>();
-        sMap = new HashMap<String,Activity>();
+        sMap = new HashMap<String, Activity>();
     }
 
-    public static MyActivityManager getDestoryed(){
-        if(destroyedAllActivity == null){
+    public static MyActivityManager getDestoryed() {
+        if (destroyedAllActivity == null) {
             destroyedAllActivity = new MyActivityManager();
             return destroyedAllActivity;
-        }else {
+        } else {
             return destroyedAllActivity;
         }
     }
 
-    public void addActivityToList(Activity activity){
+    public void addActivityToList(Activity activity) {
         list.add(activity);
     }
 
-    public void destroyedListActivity(){
-        for (Activity activity:list){
-            activity.finish();
+    public void destroyedListActivity() {
+        for (Activity activity : list) {
+            if (activity != null) {
+                activity.finish();
+            }
         }
         list.clear();
     }
 
-    public void addActivityToMap(String activityName,Activity activity){
-        sMap.put(activityName,activity);
+    public void addActivityToMap(String activityName, Activity activity) {
+        sMap.put(activityName, activity);
     }
 
-    public void destroyedMapActivity(String activityName){
-        if(sMap.containsKey(activityName)){
+    public void destroyedMapActivity(String activityName) {
+        if (sMap.containsKey(activityName)) {
             sMap.remove(activityName);
         }
     }

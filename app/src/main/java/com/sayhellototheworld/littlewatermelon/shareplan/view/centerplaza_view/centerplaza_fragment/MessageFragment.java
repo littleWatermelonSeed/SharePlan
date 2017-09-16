@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.sayhellototheworld.littlewatermelon.shareplan.R;
-import com.sayhellototheworld.littlewatermelon.shareplan.util.SysUtils;
+import com.sayhellototheworld.littlewatermelon.shareplan.util.StatusBarUtils;
 
 public class MessageFragment extends Fragment {
 
@@ -33,7 +33,7 @@ public class MessageFragment extends Fragment {
     }
 
     private void initLayoutMargin(){
-        SysUtils.setLayoutMargin(getActivity(),parentLayout);
+        StatusBarUtils.setLayoutMargin(getActivity(),parentLayout);
     }
 
 }

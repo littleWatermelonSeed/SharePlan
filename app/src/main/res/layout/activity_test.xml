@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.sayhellototheworld.littlewatermelon.shareplan.TestActivity">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/activity_test_headPortrait"
+        android:layout_width="180px"
+        android:layout_height="180px"
+        android:layout_marginTop="10px"
+        app:civ_border_color="@color/white"
+        app:civ_border_width="1dp"/>
+
+    <Button
+        android:id="@+id/activity_test_shangchuan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:text="button1"/>
+
+    <Button
+        android:id="@+id/activity_test_xiazai"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:text="button2"/>
+
+</LinearLayout>

@@ -40,7 +40,10 @@ public class BaseSlideBcakStatusActivity extends BaseStatusActivity {
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         screenWidth = metrics.widthPixels;
-        setTheme(android.R.style.Animation_Translucent);
+    }
+
+    protected void slideBackDo(){
+
     }
 
     @Override
@@ -70,7 +73,7 @@ public class BaseSlideBcakStatusActivity extends BaseStatusActivity {
                     ObjectAnimator animator = ObjectAnimator.ofFloat(decorView,"translationX",offsetX,(int)screenWidth);
                     animator.setDuration(200);
                     animator.setInterpolator(new DecelerateInterpolator());
-                    animator.addListener(new Animator.AnimatorListener() {
+                    animator.addListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationStart(Animator animation) {
                             backAnim = true;
@@ -78,17 +81,8 @@ public class BaseSlideBcakStatusActivity extends BaseStatusActivity {
 
                         @Override
                         public void onAnimationEnd(Animator animation) {
+                            slideBackDo();
                             finish();
-                        }
-
-                        @Override
-                        public void onAnimationCancel(Animator animation) {
-
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animator animation) {
-
                         }
                     });
                     animator.start();

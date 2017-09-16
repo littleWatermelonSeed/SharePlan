@@ -9,7 +9,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.sayhellototheworld.littlewatermelon.shareplan.R;
+import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.base_interface.BaseActivityDo;
+import com.sayhellototheworld.littlewatermelon.shareplan.util.LayoutBackgroundUtil;
 import com.sayhellototheworld.littlewatermelon.shareplan.view.base_activity.BaseStatusActivity;
 import com.sayhellototheworld.littlewatermelon.shareplan.view.base_activity.SystemBarTintManager;
 import com.sayhellototheworld.littlewatermelon.shareplan.view.centerplaza_view.centerplaza_fragment.HomePageFragment;
@@ -17,7 +21,7 @@ import com.sayhellototheworld.littlewatermelon.shareplan.view.centerplaza_view.c
 import com.sayhellototheworld.littlewatermelon.shareplan.view.centerplaza_view.centerplaza_fragment.PlanFragment;
 import com.sayhellototheworld.littlewatermelon.shareplan.view.centerplaza_view.centerplaza_fragment.UserFragment;
 
-public class CenterPlazaActivity extends BaseStatusActivity implements View.OnClickListener{
+public class CenterPlazaActivity extends BaseStatusActivity implements View.OnClickListener,BaseActivityDo{
 
     private FrameLayout contentLayout;
     private TextView messageRemind;
@@ -48,19 +52,26 @@ public class CenterPlazaActivity extends BaseStatusActivity implements View.OnCl
         init();
     }
 
-    private void init(){
+    @Override
+    public void init(){
         initParam();
         initWidget();
         setFragment(R.id.activity_center_plaza_bottomBar_home);
     }
 
-
-    private void initParam(){
+    @Override
+    public  void initParam(){
         fm = getFragmentManager();
         mTintManager = getTintManager();
     }
 
-    private void initWidget(){
+    @Override
+    public void initShow() {
+
+    }
+
+    @Override
+    public  void initWidget(){
         contentLayout = (FrameLayout)findViewById(R.id.activity_center_plaza_content);
         messageRemind = (TextView)findViewById(R.id.activity_center_plaza_bottomBar_messageRemind);
         iHome = (ImageView) findViewById(R.id.activity_center_plaza_bottomBar_home);
@@ -118,6 +129,7 @@ public class CenterPlazaActivity extends BaseStatusActivity implements View.OnCl
                 initBottomBarItemImage();
                 iHome.setImageResource(R.drawable.activity_center_plaza_bottombar_home_selected);
                 tHome.setTextColor(getResources().getColor(R.color.centerPlazaBottomBar_textColor));
+                mTransaction.commit();
                 break;
             case R.id.activity_center_plaza_bottomBar_message:
                 if(mFragment_message == null){
@@ -129,6 +141,7 @@ public class CenterPlazaActivity extends BaseStatusActivity implements View.OnCl
                 initBottomBarItemImage();
                 iMessage.setImageResource(R.drawable.activity_center_plaza_bottombar_message_selected);
                 tMessage.setTextColor(getResources().getColor(R.color.centerPlazaBottomBar_textColor));
+                mTransaction.commit();
                 break;
             case R.id.activity_center_plaza_bottomBar_plan:
                 if(mFragment_plan == null){
@@ -140,20 +153,40 @@ public class CenterPlazaActivity extends BaseStatusActivity implements View.OnCl
                 initBottomBarItemImage();
                 iPlan.setImageResource(R.drawable.activity_center_plaza_bottombar_plan_selected);
                 tPlan.setTextColor(getResources().getColor(R.color.centerPlazaBottomBar_textColor));
+                mTransaction.commit();
                 break;
             case R.id.activity_center_plaza_bottomBar_user:
                 if(mFragment_user == null){
-                    mFragment_user = new UserFragment();
-                    mTransaction.add(R.id.activity_center_plaza_content,mFragment_user);
+                    LayoutBackgroundUtil.preloadBackgroundResource(this, R.drawable.user_background, new RequestListener() {
+                        @Override
+                        public boolean onException(Exception e, Object model, Target target, boolean isFirstResource) {
+                            mFragment_user = new UserFragment();
+                            mTransaction.add(R.id.activity_center_plaza_content,mFragment_user);
+                            mTransaction.commit();
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(Object resource, Object model, Target target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            mFragment_user = new UserFragment();
+                            mTransaction.add(R.id.activity_center_plaza_content,mFragment_user);
+                            mTransaction.commit();
+                            return false;
+                        }
+                    });
+                    initBottomBarItemImage();
+                    iUser.setImageResource(R.drawable.activity_center_plaza_bottombar_user_selected);
+                    tUser.setTextColor(getResources().getColor(R.color.centerPlazaBottomBar_textColor));
+                    return;
                 }else {
                     mTransaction.show(mFragment_user);
                 }
                 initBottomBarItemImage();
                 iUser.setImageResource(R.drawable.activity_center_plaza_bottombar_user_selected);
                 tUser.setTextColor(getResources().getColor(R.color.centerPlazaBottomBar_textColor));
+                mTransaction.commit();
                 break;
         }
-        mTransaction.commit();
     }
 
     private void hideFragment(){

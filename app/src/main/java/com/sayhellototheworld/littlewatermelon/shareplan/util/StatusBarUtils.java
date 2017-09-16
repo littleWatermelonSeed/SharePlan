@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
  * Created by 123 on 2017/8/23.
  */
 
-public class SysUtils {
+public class StatusBarUtils {
 
     public static int getStatusHeight(Activity activity){
         int statusHeight = 0;
@@ -47,7 +47,7 @@ public class SysUtils {
         View firstChild = parentLayout.getChildAt(0);
         if(firstChild != null){
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(firstChild.getLayoutParams());
-            params.setMargins(0, SysUtils.getStatusHeight(activity),0,0);
+            params.setMargins(0, StatusBarUtils.getStatusHeight(activity),0,0);
             firstChild.setLayoutParams(params);
         }
     }

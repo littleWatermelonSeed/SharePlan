@@ -1,16 +1,19 @@
 package com.sayhellototheworld.littlewatermelon.shareplan.view.base_activity;
 
 import android.annotation.TargetApi;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 
 import com.sayhellototheworld.littlewatermelon.shareplan.R;
 import com.zhy.autolayout.AutoLayoutActivity;
+
+import java.util.List;
 
 /**
  * Created by 123 on 2017/8/22.
@@ -18,8 +21,8 @@ import com.zhy.autolayout.AutoLayoutActivity;
 
 public class BaseStatusActivity extends AutoLayoutActivity {
 
-    private FrameLayout mLayout;
-    private SystemBarTintManager tintManager;
+    protected boolean isActive = true;
+    protected SystemBarTintManager tintManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,8 +47,8 @@ public class BaseStatusActivity extends AutoLayoutActivity {
 
     }
 
-    protected SystemBarTintManager getTintManager(){
-        if(tintManager != null){
+    protected SystemBarTintManager getTintManager() {
+        if (tintManager != null) {
             return tintManager;
         }
         return null;
@@ -62,6 +65,44 @@ public class BaseStatusActivity extends AutoLayoutActivity {
             winParams.flags &= ~bits;
         }
         win.setAttributes(winParams);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (!isAppOnForeground()){
+            isActive = false;
+        }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if (!isActive){
+            isActive = true;
+        }
+    }
+
+    protected boolean isAppOnForeground() {
+        // Returns a list of application processes that are running on the
+        // device
+
+        ActivityManager activityManager = (ActivityManager) getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
+        String packageName = getApplicationContext().getPackageName();
+
+        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager
+                .getRunningAppProcesses();
+        if (appProcesses == null)
+            return false;
+
+        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
+            // The name of the process that this object is associated with.
+            if (appProcess.processName.equals(packageName)
+                    && appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
