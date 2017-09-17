@@ -3,28 +3,24 @@ package com.sayhellototheworld.littlewatermelon.shareplan;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.sayhellototheworld.littlewatermelon.shareplan.model.data_manage.bean.MyUserBean;
 import com.sayhellototheworld.littlewatermelon.shareplan.model.data_manage.data.ManageUser;
-import com.sayhellototheworld.littlewatermelon.shareplan.model.local_file.GetFile;
-import com.sayhellototheworld.littlewatermelon.shareplan.model.local_file.ManageFile;
 import com.sayhellototheworld.littlewatermelon.shareplan.model.local_file.MySharedPreferences;
+import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.EnterDo;
+import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.base_interface.BaseActivityDo;
+import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.userManage_interface.UserLoginDo;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.BmobExceptionUtil;
-import com.sayhellototheworld.littlewatermelon.shareplan.util.PictureUtil;
 import com.sayhellototheworld.littlewatermelon.shareplan.view.base_activity.BaseStatusActivity;
 import com.sayhellototheworld.littlewatermelon.shareplan.view.centerplaza_view.CenterPlazaActivity;
 
-import java.io.File;
-
-import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.DownloadFileListener;
-import cn.bmob.v3.listener.SaveListener;
 
-public class EnterActivity extends BaseStatusActivity {
+public class EnterActivity extends BaseStatusActivity implements BaseActivityDo,EnterDo{
 
     private Button button;
     private Button button_test;
@@ -39,7 +35,8 @@ public class EnterActivity extends BaseStatusActivity {
         init();
     }
 
-    private void init() {
+    @Override
+    public void init() {
         button = (Button) findViewById(R.id.test);
         button.setClickable(false);
         button.setOnClickListener(new View.OnClickListener() {
@@ -64,71 +61,110 @@ public class EnterActivity extends BaseStatusActivity {
         initUser();
     }
 
+    @Override
+    public void initWidget() {
+
+    }
+
+    @Override
+    public void initParam() {
+
+    }
+
+    @Override
+    public void initShow() {
+
+    }
+
     private void downloadFile(BmobFile file){
         //允许设置下载文件的存储路径，默认下载文件的目录为：context.getApplicationContext().getCacheDir()+"/bmob/"
-        File saveFile = new File(GetFile.getInternalImageFile(), file.getFilename());
-        file.download(saveFile, new DownloadFileListener() {
-
-            @Override
-            public void onStart() {
-
-            }
-
-            @Override
-            public void done(String savePath,BmobException e) {
-                if(e==null){
-                    button.setClickable(true);
-                }else{
-                    BmobExceptionUtil.dealWithException(EnterActivity.this,e);
-                }
-            }
-
-            @Override
-            public void onProgress(Integer value, long newworkSpeed) {
-
-            }
-
-        });
+//        File saveFile = new File(GetFile.getInternalImageFile(), file.getFilename());
+//        file.download(saveFile, new DownloadFileListener() {
+//
+//            @Override
+//            public void onStart() {
+//
+//            }
+//
+//            @Override
+//            public void done(String savePath,BmobException e) {
+//                if(e==null){
+//                    button.setClickable(true);
+//                }else{
+//                    BmobExceptionUtil.dealWithException(EnterActivity.this,e);
+//                }
+//            }
+//
+//            @Override
+//            public void onProgress(Integer value, long newworkSpeed) {
+//
+//            }
+//
+//        });
     }
 
     private void initUser() {
-        if (!login) {
+//        if (!login) {
+//            return;
+//        }
+//
+//        MyUserBean bu2 = new MyUserBean();
+//
+//        bu2.setUsername(MySharedPreferences.getInstance().getStringMessage(MySharedPreferences.KEY_USER_ID));
+//        bu2.setPassword(MySharedPreferences.getInstance().getStringMessage(MySharedPreferences.KEY_USER_PASSWORD));
+//
+//        bu2.login(new SaveListener<MyUserBean>() {
+//
+//            @Override
+//            public void done(final MyUserBean myUserBean, final BmobException e) {
+//                if (e == null) {
+//                    if (mManageUser.getCurrentUser().getHeadPortrait().getUrl() == null) {
+//                        return;
+//                    } else {
+//                        if (ManageFile.getHeadPortrait(PictureUtil.getPicNameFromUrl(myUserBean.getHeadPortrait().getUrl())) != null) {
+//                            return;
+//                        }
+//                        final BmobFile headPic = new BmobFile(PictureUtil.getPicNameFromUrl(myUserBean.getHeadPortrait().getUrl()) + ".png",
+//                                "",myUserBean.getHeadPortrait().getUrl());
+//                        new Thread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                downloadFile(headPic);
+//                            }
+//                        }).start();
+//                    }
+//                } else {
+//                    BmobUser.logOut();
+//                    BmobExceptionUtil.dealWithException(EnterActivity.this, e);
+//                }
+//            }
+//        });
+        if (!MySharedPreferences.getInstance().getBooleanMessage(MySharedPreferences.KEY_USER_LOGIN_STATUS)){
             return;
         }
-
-        MyUserBean bu2 = new MyUserBean();
-
-        bu2.setUsername(MySharedPreferences.getInstance().getMessage(MySharedPreferences.TYPE_USER_ID));
-        bu2.setPassword(MySharedPreferences.getInstance().getMessage(MySharedPreferences.TYPE_USER_PASSWORD));
-
-        bu2.login(new SaveListener<MyUserBean>() {
-
-            @Override
-            public void done(final MyUserBean myUserBean, final BmobException e) {
-                if (e == null) {
-                    if (mManageUser.getCurrentUser().getHeadPortrait().getUrl() == null) {
-                        return;
-                    } else {
-                        if (ManageFile.getHeadPortrait(PictureUtil.getPicNameFromUrl(myUserBean.getHeadPortrait().getUrl())) != null) {
-                            return;
-                        }
-                        final BmobFile headPic = new BmobFile(PictureUtil.getPicNameFromUrl(myUserBean.getHeadPortrait().getUrl()) + ".png",
-                                "",myUserBean.getHeadPortrait().getUrl());
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                downloadFile(headPic);
-                            }
-                        }).start();
+        mManageUser.loginAndSyncUser(MySharedPreferences.getInstance().getStringMessage(MySharedPreferences.KEY_USER_ID),
+                MySharedPreferences.getInstance().getStringMessage(MySharedPreferences.KEY_USER_PASSWORD),
+                new UserLoginDo() {
+                    @Override
+                    public void loginSuccess(MyUserBean myUserBean) {
+                        Log.i("niyuanjie","登录成功");
                     }
-                } else {
-                    BmobUser.logOut();
-                    BmobExceptionUtil.dealWithException(EnterActivity.this, e);
-                }
-            }
-        });
+
+                    @Override
+                    public void loginFail(BmobException ex) {
+                        Log.i("niyuanjie","登录失败");
+                        BmobExceptionUtil.dealWithException(EnterActivity.this,ex);
+                    }
+                });
 
     }
+
+
+    @Override
+    public void initUser(boolean loginStatus) {
+
+    }
+
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {

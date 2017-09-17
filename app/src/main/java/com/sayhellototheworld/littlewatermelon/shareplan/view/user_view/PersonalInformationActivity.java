@@ -156,7 +156,7 @@ public class PersonalInformationActivity extends BaseStatusActivity implements B
             ((RadioButton) (mRadioGroup.getChildAt(1))).setChecked(true);
         }
 
-        if (userBean.getHeadPortrait().getUrl() == null) {
+        if (userBean.getHeadPortrait() == null || userBean.getHeadPortrait().getUrl() == null) {
             Glide.with(this)
                     .load(R.drawable.head_log1)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -168,6 +168,7 @@ public class PersonalInformationActivity extends BaseStatusActivity implements B
                     .load(ManageFile.getHeadPortrait(PictureUtil.getPicNameFromUrl(userBean.getHeadPortrait().getUrl())))
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
+                    .error(R.drawable.head_log1)
                     .dontAnimate()
                     .into(mCircleImageView);
         }

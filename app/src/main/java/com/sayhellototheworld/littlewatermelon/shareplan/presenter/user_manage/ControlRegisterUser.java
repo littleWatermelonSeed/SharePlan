@@ -97,7 +97,6 @@ public class ControlRegisterUser implements ViRegisterUserCoDo,UserGetKeyCodeDo,
                         mManageUser.registerCommit(userBean,keyCode,ControlRegisterUser.this);
                     }
                 });
-
     }
 
     @Override
@@ -117,8 +116,9 @@ public class ControlRegisterUser implements ViRegisterUserCoDo,UserGetKeyCodeDo,
     @Override
     public void registerSuccess() {
         DialogLoading.dismissLoadingDialog(handler,dialog,"注册成功", DialogLoading.MSG_SUCCESS);
-        MySharedPreferences.getInstance().saveMessage(userName,MySharedPreferences.TYPE_USER_ID);
-        MySharedPreferences.getInstance().saveMessage(userPassword,MySharedPreferences.TYPE_USER_PASSWORD);
+        MySharedPreferences.getInstance().saveMessage(MySharedPreferences.KEY_USER_ID,userName);
+        MySharedPreferences.getInstance().saveMessage(MySharedPreferences.KEY_USER_PASSWORD,userPassword);
+        MySharedPreferences.getInstance().saveMessage(MySharedPreferences.KEY_USER_LOGIN_STATUS,true);
         UserFragment.setLogin(true);
         MyActivityManager.getDestoryed().destroyedListActivity();
         PersonalInformationActivity.startPersonalInformationActivity(mContext);

@@ -13,9 +13,7 @@ public class MySharedPreferences {
 
     public final static String KEY_USER_ID = "userID";
     public final static String KEY_USER_PASSWORD = "userPS";
-
-    public final static int TYPE_USER_ID = 0;
-    public final static int TYPE_USER_PASSWORD = 1;
+    public final static String KEY_USER_LOGIN_STATUS = "loginStatus";
 
     private Context mContext;
 
@@ -34,39 +32,33 @@ public class MySharedPreferences {
         mSharedPreferences = mContext.getSharedPreferences("MySharedPreferences",Context.MODE_PRIVATE);
     }
 
-    public String getMessage(int msgType){
-        String message = "";
-        switch (msgType){
-            case TYPE_USER_ID:
-                message = mSharedPreferences.getString(KEY_USER_ID,"");
-                break;
-            case TYPE_USER_PASSWORD:
-                message = mSharedPreferences.getString(KEY_USER_PASSWORD,"");
-                break;
-        }
-        return message;
+    public boolean getBooleanMessage(String msgKey){
+        return mSharedPreferences.getBoolean(msgKey,false);
     }
 
-    public String getMessage(String msgKey){
+    public String getStringMessage(String msgKey){
         return mSharedPreferences.getString(msgKey,"");
     }
 
-    public void saveMessage(String message,int msgType){
+    public int getIntMessage(String msgKey){
+        return mSharedPreferences.getInt(msgKey,-1);
+    }
+
+    public void saveMessage(String msgKey,int message){
         SharedPreferences.Editor editor = mSharedPreferences.edit();
-        switch (msgType){
-            case TYPE_USER_ID:
-                editor.putString(KEY_USER_ID,message);
-                break;
-            case TYPE_USER_PASSWORD:
-                editor.putString(KEY_USER_PASSWORD,message);
-                break;
-        }
+        editor.putInt(KEY_USER_PASSWORD,message);
         editor.commit();
     }
 
     public void saveMessage(String msgKey,String message){
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString(msgKey,message);
+        editor.commit();
+    }
+
+    public void saveMessage(String msgKey,boolean message){
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putBoolean(msgKey,message);
         editor.commit();
     }
 

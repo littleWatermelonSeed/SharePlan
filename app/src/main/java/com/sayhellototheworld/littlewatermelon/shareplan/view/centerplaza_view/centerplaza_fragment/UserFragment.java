@@ -233,7 +233,7 @@ public class UserFragment extends Fragment implements BaseActivityDo, View.OnCli
             textView_introductionContent.setText(userBean.getIntroduction());
         }
 
-        if (userBean.getHeadPortrait().getUrl() == null) {
+        if (userBean.getHeadPortrait() == null || userBean.getHeadPortrait().getUrl() == null) {
             Glide.with(this)
                     .load(R.drawable.head_log1)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -246,6 +246,7 @@ public class UserFragment extends Fragment implements BaseActivityDo, View.OnCli
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
                     .dontAnimate()
+                    .error(R.drawable.head_log1)
                     .into(mCircleImageView);
         }
         login = true;

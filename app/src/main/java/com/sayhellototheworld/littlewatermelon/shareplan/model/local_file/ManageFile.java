@@ -34,30 +34,30 @@ public class ManageFile {
     public final static String FILENAME_USER_BACKGROUND_SELF = "user_background_self";
 
     public static void saveheadPortrait(int resourceID,String userID) {
-        final File headPortrait = new File(GetFile.getInternalImageFile(), FILENAME_USER_HEADPORTRAIL + userID + ".png");
+        final File headPortrait = new File(GetFile.getInternalHeadImageFile(), FILENAME_USER_HEADPORTRAIL + userID + ".png");
         saveFile(resourceID, context, headPortrait);
     }
 
     public static void saveHeadPortrait(File headPic,String heapPicUrl) {
-        final File headPortrait = new File(GetFile.getInternalImageFile(), heapPicUrl + ".png");
+        final File headPortrait = new File(GetFile.getNewInternalHeadImageFile(), heapPicUrl + ".png");
         saveImage(headPic, headPortrait);
     }
 
-    public static void saveSelfBackground(File background,String userID) {
-        final File selfBackground = new File(GetFile.getInternalImageFile(), FILENAME_USER_BACKGROUND_SELF + userID + ".png");
+    public static void saveSelfBackground(File background,String skinPicUrl) {
+        final File selfBackground = new File(GetFile.getNewInternalSkinImageFile(), skinPicUrl + ".png");
         saveImage(background, selfBackground);
     }
 
     public static File getHeadPortrait(String heapPicUrl){
-        File file = new File(GetFile.getInternalImageFile(), heapPicUrl + ".png");
+        File file = new File(GetFile.getInternalHeadImageFile(), heapPicUrl + ".png");
         if (!file.exists()){
             return null;
         }
         return file;
     }
 
-    public static File getSelfBackground(String userID){
-        File file = new File(GetFile.getInternalImageFile(), FILENAME_USER_BACKGROUND_SELF + userID + ".png");
+    public static File getSelfBackground(String skinPicUrl){
+        File file = new File(GetFile.getInternalSkinImageFile(), skinPicUrl + ".png");
         if (!file.exists()){
             return null;
         }

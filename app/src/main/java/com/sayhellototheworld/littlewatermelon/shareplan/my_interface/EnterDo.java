@@ -6,6 +6,6 @@ package com.sayhellototheworld.littlewatermelon.shareplan.my_interface;
 
 public interface EnterDo {
 
-    void loginUser();
+    void initUser(boolean loginStatus);
 
 }

@@ -16,8 +16,16 @@ public class MyUserBean extends BmobUser {
     private String schoolName;
     private String location;
     private String introduction;
-//    private String headPortraitUrl;
+    private BmobFile skin;
     private BmobFile headPortrait;
+
+    public BmobFile getSkin() {
+        return skin;
+    }
+
+    public void setSkin(BmobFile skin) {
+        this.skin = skin;
+    }
 
     public BmobFile getHeadPortrait() {
         return headPortrait;
@@ -74,14 +82,6 @@ public class MyUserBean extends BmobUser {
     public void setIntroduction(String introduction) {
         this.introduction = introduction;
     }
-
-//    public String getHeadPortraitUrl() {
-//        return headPortraitUrl;
-//    }
-//
-//    public void setHeadPortraitUrl(String headPortraitUrl) {
-//        this.headPortraitUrl = headPortraitUrl;
-//    }
 
     public String getMyEmail() {
         return myEmail;

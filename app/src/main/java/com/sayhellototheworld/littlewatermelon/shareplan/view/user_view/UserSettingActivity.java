@@ -8,6 +8,7 @@ import android.widget.Button;
 
 import com.sayhellototheworld.littlewatermelon.shareplan.R;
 import com.sayhellototheworld.littlewatermelon.shareplan.customwidget.LiTopBar;
+import com.sayhellototheworld.littlewatermelon.shareplan.model.local_file.MySharedPreferences;
 import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.base_interface.BaseActivityDo;
 import com.sayhellototheworld.littlewatermelon.shareplan.presenter.centerplaza.ControlUserFragment;
 import com.sayhellototheworld.littlewatermelon.shareplan.customwidget.DialogConfirm;
@@ -77,6 +78,7 @@ public class UserSettingActivity extends BaseSlideBcakStatusActivity implements 
             public void ok() {
                 BmobUser.logOut();
                 ControlUserFragment.syncUserFragment();
+                MySharedPreferences.getInstance().saveMessage(MySharedPreferences.KEY_USER_LOGIN_STATUS,false);
                 finish();
                 LoginActivity.startLoginActivity(UserSettingActivity.this);
             }

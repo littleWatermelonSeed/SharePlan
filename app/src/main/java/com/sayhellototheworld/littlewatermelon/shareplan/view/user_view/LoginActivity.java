@@ -16,6 +16,8 @@ import com.bumptech.glide.request.target.Target;
 import com.othershe.nicedialog.BaseNiceDialog;
 import com.othershe.nicedialog.ViewHolder;
 import com.sayhellototheworld.littlewatermelon.shareplan.R;
+import com.sayhellototheworld.littlewatermelon.shareplan.customwidget.DialogLoading;
+import com.sayhellototheworld.littlewatermelon.shareplan.model.data_manage.bean.MyUserBean;
 import com.sayhellototheworld.littlewatermelon.shareplan.model.data_manage.data.ManageUser;
 import com.sayhellototheworld.littlewatermelon.shareplan.model.local_file.MySharedPreferences;
 import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.base_interface.BaseActivityDo;
@@ -23,7 +25,6 @@ import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.userManage
 import com.sayhellototheworld.littlewatermelon.shareplan.presenter.centerplaza.ControlUserFragment;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.BmobExceptionUtil;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.LayoutBackgroundUtil;
-import com.sayhellototheworld.littlewatermelon.shareplan.customwidget.DialogLoading;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.MyToastUtil;
 import com.sayhellototheworld.littlewatermelon.shareplan.view.base_activity.BaseSlideBcakStatusActivity;
 import com.sayhellototheworld.littlewatermelon.shareplan.view.base_activity.MyActivityManager;
@@ -95,8 +96,8 @@ public class LoginActivity extends BaseSlideBcakStatusActivity implements BaseAc
         };
         mPreferences = MySharedPreferences.getInstance();
 
-        userID = mPreferences.getMessage(MySharedPreferences.TYPE_USER_ID);
-        userPassword = mPreferences.getMessage(MySharedPreferences.TYPE_USER_PASSWORD);
+        userID = mPreferences.getStringMessage(MySharedPreferences.KEY_USER_ID);
+        userPassword = mPreferences.getStringMessage(MySharedPreferences.KEY_USER_PASSWORD);
     }
 
     @Override
@@ -160,7 +161,7 @@ public class LoginActivity extends BaseSlideBcakStatusActivity implements BaseAc
                         TextView textView = viewHolder.getView(R.id.nicedialog_loading_textView);
                         textView.setText("登录中...");
                         ManageUser manageUser = new ManageUser(LoginActivity.this);
-                        manageUser.login(userID,userPassword,LoginActivity.this);
+                        manageUser.loginAndSyncUser(userID,userPassword,LoginActivity.this);
                     }
                 });
     }
@@ -177,9 +178,10 @@ public class LoginActivity extends BaseSlideBcakStatusActivity implements BaseAc
     }
 
     @Override
-    public void loginSuccess() {
-        mPreferences.saveMessage(userID,MySharedPreferences.TYPE_USER_ID);
-        mPreferences.saveMessage(userPassword,MySharedPreferences.TYPE_USER_PASSWORD);
+    public void loginSuccess(MyUserBean myUserBean) {
+        mPreferences.saveMessage(MySharedPreferences.KEY_USER_ID,userID);
+        mPreferences.saveMessage(MySharedPreferences.KEY_USER_PASSWORD,userPassword);
+        mPreferences.saveMessage(MySharedPreferences.KEY_USER_LOGIN_STATUS,true);
         DialogLoading.dismissLoadingDialog(handler,dialog,"登录成功", DialogLoading.MSG_SUCCESS);
         ControlUserFragment.syncUserFragment();
         finish();

@@ -8,8 +8,42 @@ import java.io.File;
 
 public class GetFile {
 
-    public static File getInternalImageFile(){
-        File file = new File(FilePath.getInternalCacheDirectory("myCache"),"internalImage");
+    public static File getNewInternalHeadImageFile(){
+        File file = new File(FilePath.getInternalCacheDirectory("myCache"),"internalHeadImage");
+        if (file.exists()){
+            File[] files = file.listFiles();
+            for (File f:files){
+                f.delete();
+            }
+        }else {
+            file.mkdir();
+        }
+        return file;
+    }
+
+    public static File getInternalHeadImageFile(){
+        File file = new File(FilePath.getInternalCacheDirectory("myCache"),"internalHeadImage");
+        if (!file.exists()){
+            file.mkdir();
+        }
+        return file;
+    }
+
+    public static File getNewInternalSkinImageFile(){
+        File file = new File(FilePath.getInternalCacheDirectory("myCache"),"internalSkinImage");
+        if (file.exists()){
+            File[] files = file.listFiles();
+            for (File f:files){
+                f.delete();
+            }
+        }else {
+            file.mkdir();
+        }
+        return file;
+    }
+
+    public static File getInternalSkinImageFile(){
+        File file = new File(FilePath.getInternalCacheDirectory("myCache"),"internalSkinImage");
         if (!file.exists()){
             file.mkdir();
         }

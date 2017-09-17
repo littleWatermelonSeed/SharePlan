@@ -1,5 +1,7 @@
 package com.sayhellototheworld.littlewatermelon.shareplan.my_interface.userManage_interface;
 
+import com.sayhellototheworld.littlewatermelon.shareplan.model.data_manage.bean.MyUserBean;
+
 import cn.bmob.v3.exception.BmobException;
 
 /**
@@ -8,7 +10,7 @@ import cn.bmob.v3.exception.BmobException;
 
 public interface UserLoginDo {
 
-    void loginSuccess();
+    void loginSuccess(MyUserBean myUserBean);
     void loginFail(BmobException ex);
 
 }
