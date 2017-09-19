@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ListView;
@@ -12,9 +11,10 @@ import android.widget.TextView;
 
 import com.sayhellototheworld.littlewatermelon.shareplan.R;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.pictureselect.FolderListViewAdapter;
+import com.sayhellototheworld.littlewatermelon.shareplan.view.base_activity.BaseNoStatusActivity;
 
 
-public class FolderListviewActivity extends AppCompatActivity implements View.OnClickListener{
+public class FolderListviewActivity extends BaseNoStatusActivity implements View.OnClickListener{
 
     private TextView textView_cancle;
     private ListView listView;
@@ -40,6 +40,7 @@ public class FolderListviewActivity extends AppCompatActivity implements View.On
         textView_cancle.setOnClickListener(this);
         adapter = new FolderListViewAdapter(this);
         listView.setAdapter(adapter);
+        baseActivityManager.addActivityToUserMap(this,getClass().getSimpleName());
     }
 
     public static void startFolderListviewActivityForResult(Context context){

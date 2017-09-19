@@ -53,7 +53,7 @@ public class ControlForgetPassword implements ViForgetPasswordCoDo,QueryUserDo{
     }
 
     @Override
-    public void verifyUser(final String phone,String smsCode) {
+    public void verifyUser(final String phone) {
         DialogLoading.showLoadingDialog(((FragmentActivity) mContext).getSupportFragmentManager(),
                 new DialogLoading.ShowLoadingDone() {
                     @Override

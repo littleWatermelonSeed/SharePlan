@@ -32,7 +32,6 @@ import com.sayhellototheworld.littlewatermelon.shareplan.util.MyToastUtil;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.PictureUtil;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.pictureselect.activity.ShowPictureActivity;
 import com.sayhellototheworld.littlewatermelon.shareplan.view.base_activity.BaseStatusActivity;
-import com.sayhellototheworld.littlewatermelon.shareplan.view.base_activity.MyActivityManager;
 
 import java.io.File;
 import java.util.Calendar;
@@ -65,7 +64,6 @@ public class PersonalInformationActivity extends BaseStatusActivity implements B
 
     private ViUpdateUserCoDo vud;
     private MyUserBean mUserBean;
-    private MyActivityManager mActivityManager;
 
     private BmobFile headPic = null;
 
@@ -127,9 +125,9 @@ public class PersonalInformationActivity extends BaseStatusActivity implements B
     public void initParam() {
         sex = "男";
         mUserBean = new MyUserBean();
-        mActivityManager = MyActivityManager.getDestoryed();
-        mActivityManager.addActivityToList(this);
+        baseActivityManager.addActivityToList(this);
         vud = new ControlUpdateUser(this, this);
+        baseActivityManager.addActivityToUserMap(this,getClass().getSimpleName());
     }
 
     @Override
@@ -225,7 +223,7 @@ public class PersonalInformationActivity extends BaseStatusActivity implements B
 
             @Override
             public void ok() {
-                mActivityManager.destroyedListActivity();
+                baseActivityManager.destroyedListActivity();
             }
         }).setMargin(60)
                 .setOutCancel(false)
@@ -270,10 +268,8 @@ public class PersonalInformationActivity extends BaseStatusActivity implements B
                     public void convertView(ViewHolder holder, final BaseNiceDialog dialog) {
                         final TextView editText1 = holder.getView(R.id.nicedialog_head_portrait_takePicture);
                         final TextView editText2 = holder.getView(R.id.nicedialog_head_portrait_chooseDFromAlbum);
-                        final TextView editText3 = holder.getView(R.id.nicedialog_head_portrait_title);
-                        final TextView editText4 = holder.getView(R.id.nicedialog_head_portrait_choosedFromSystem);
-                        final View view = holder.getView(R.id.nicedialog_head_portrait_line);
-                        editText4.setText("使用系统头像");
+                        final TextView editText3 = holder.getView(R.id.nicedialog_head_portrait_choosedFromSystem);
+                        View view = holder.getView(R.id.nicedialog_head_portrait_line);
                         view.setVisibility(View.GONE);
                         editText3.setVisibility(View.GONE);
                         editText1.setOnClickListener(new View.OnClickListener() {
@@ -287,13 +283,6 @@ public class PersonalInformationActivity extends BaseStatusActivity implements B
                             @Override
                             public void onClick(View v) {
                                 choosePicture();
-                                dialog.dismiss();
-                            }
-                        });
-                        editText4.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                useSysHeadPortrait();
                                 dialog.dismiss();
                             }
                         });
@@ -311,10 +300,6 @@ public class PersonalInformationActivity extends BaseStatusActivity implements B
 
     private void choosePicture() {
         ShowPictureActivity.startShowPictureActivityForResult(this, ShowPictureActivity.TARGET_HEAD);
-    }
-
-    private void useSysHeadPortrait() {
-
     }
 
     private void refreshHeadPortrait() {

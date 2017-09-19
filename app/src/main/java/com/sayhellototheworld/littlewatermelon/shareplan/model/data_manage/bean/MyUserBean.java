@@ -18,6 +18,15 @@ public class MyUserBean extends BmobUser {
     private String introduction;
     private BmobFile skin;
     private BmobFile headPortrait;
+    private String loginDeviceId;
+
+    public String getLoginDeviceId() {
+        return loginDeviceId;
+    }
+
+    public void setLoginDeviceId(String installation) {
+        loginDeviceId = installation;
+    }
 
     public BmobFile getSkin() {
         return skin;

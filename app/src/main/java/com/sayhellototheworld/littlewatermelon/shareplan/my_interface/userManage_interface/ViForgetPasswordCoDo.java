@@ -6,6 +6,6 @@ package com.sayhellototheworld.littlewatermelon.shareplan.my_interface.userManag
 
 public interface ViForgetPasswordCoDo {
 
-    void verifyUser(String phone,String smsCode);
+    void verifyUser(String phone);
 
 }

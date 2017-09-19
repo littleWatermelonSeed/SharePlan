@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -14,12 +15,15 @@ import java.util.Map;
 public class MyActivityManager {
     private static List<Activity> list;
     private static Map<String, Activity> sMap;
+    private static Map<String, Activity> userMap;
+    private static Activity topActivity;
 
     private static MyActivityManager destroyedAllActivity = null;
 
     private MyActivityManager() {
         list = new ArrayList<Activity>();
         sMap = new HashMap<String, Activity>();
+        userMap = new HashMap<String,Activity>();
     }
 
     public static MyActivityManager getDestoryed() {
@@ -52,6 +56,44 @@ public class MyActivityManager {
         if (sMap.containsKey(activityName)) {
             sMap.remove(activityName);
         }
+    }
+
+    public Activity getTopActivity() {
+        return topActivity;
+    }
+
+    public void setTopActivity(Activity topActivity) {
+        MyActivityManager.topActivity = topActivity;
+    }
+
+    public void addActivityToUserMap(Activity activity,String name){
+        userMap.put(name,activity);
+    }
+
+    public void removeActivityFromUserMap(String name){
+        if (userMap.containsKey(name)){
+            userMap.remove(name);
+        }
+    }
+
+    public void clearUserMap(){
+        if (userMap.size() <= 0){
+            return;
+        }
+        Iterator iter = userMap.entrySet().iterator();
+        while (iter.hasNext()){
+            Map.Entry entry = (Map.Entry)iter.next();
+            Activity activity = (Activity) entry.getValue();
+            activity.finish();
+        }
+        userMap.clear();
+    }
+
+    public boolean isExistInUserMap(String name){
+        if (userMap.containsKey(name)){
+            return true;
+        }
+        return false;
     }
 
 }

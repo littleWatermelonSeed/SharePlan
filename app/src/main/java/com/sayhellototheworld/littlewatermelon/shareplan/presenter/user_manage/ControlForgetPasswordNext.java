@@ -19,7 +19,7 @@ import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.userManage
 import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.userManage_interface.ViForgetPasswordNextCoDo;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.BmobExceptionUtil;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.MyToastUtil;
-import com.sayhellototheworld.littlewatermelon.shareplan.view.user_view.ForgetPasswordNextActivity;
+import com.sayhellototheworld.littlewatermelon.shareplan.view.base_activity.MyActivityManager;
 import com.sayhellototheworld.littlewatermelon.shareplan.view.user_view.LoginActivity;
 
 import cn.bmob.v3.exception.BmobException;
@@ -115,7 +115,7 @@ public class ControlForgetPasswordNext implements UserGetKeyCodeDo,ViForgetPassw
         DialogLoading.dismissLoadingDialog(mHandler,dialog,"密码修改成功",DialogLoading.MSG_SUCCESS);
         MySharedPreferences.getInstance().saveMessage(MySharedPreferences.KEY_USER_ID,phoneNum);
         MySharedPreferences.getInstance().saveMessage(MySharedPreferences.KEY_USER_PASSWORD,newPS);
-        ((ForgetPasswordNextActivity)mContext).mActivityManager.destroyedListActivity();
+        MyActivityManager.getDestoryed().destroyedListActivity();
         LoginActivity.startLoginActivity(mContext);
     }
 

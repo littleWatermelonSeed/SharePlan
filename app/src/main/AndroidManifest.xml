@@ -17,6 +17,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <!-- 允许读取手机状态 用于创建BmobInstallation -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".SPApplication"
@@ -77,6 +79,8 @@
         </activity>
         <activity android:name=".util.pictureselect.activity.PreviewBackgroundActivity">
         </activity>
+
+        
     </application>
 
 </manifest>

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.GridView;
@@ -20,13 +19,14 @@ import com.sayhellototheworld.littlewatermelon.shareplan.util.pictureselect.GetI
 import com.sayhellototheworld.littlewatermelon.shareplan.util.pictureselect.GridAdapter;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.pictureselect.Image;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.pictureselect.PictureDataManager;
+import com.sayhellototheworld.littlewatermelon.shareplan.view.base_activity.BaseNoStatusActivity;
 import com.sayhellototheworld.littlewatermelon.shareplan.view.base_activity.MyActivityManager;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShowPictureActivity extends AppCompatActivity {
+public class ShowPictureActivity extends BaseNoStatusActivity {
 
     private RelativeLayout bottomLayout;
     private LinearLayout backLayout;
@@ -69,6 +69,7 @@ public class ShowPictureActivity extends AppCompatActivity {
         setWidgetListener();
         setGridViewAdapter();
         MyActivityManager.getDestoryed().addActivityToList(this);
+        baseActivityManager.addActivityToUserMap(this,getClass().getSimpleName());
     }
 
     private void getTarget(){

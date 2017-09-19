@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.WindowManager;
 
 import com.zhy.autolayout.AutoLayoutActivity;
 
@@ -17,11 +18,20 @@ import java.util.List;
 public class BaseNoStatusActivity extends AutoLayoutActivity {
 
     protected boolean isActive = true;
+    protected MyActivityManager baseActivityManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        baseInit();
+    }
+
+    private void baseInit(){
+        //禁止屏幕横屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        //禁止自动弹出软键盘
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        baseActivityManager = MyActivityManager.getDestoryed();
     }
 
     @Override
@@ -38,6 +48,18 @@ public class BaseNoStatusActivity extends AutoLayoutActivity {
         if (!isActive){
             isActive = true;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        baseActivityManager.setTopActivity(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        baseActivityManager.removeActivityFromUserMap(getClass().getSimpleName());
     }
 
     protected boolean isAppOnForeground() {

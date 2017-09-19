@@ -27,7 +27,6 @@ import com.sayhellototheworld.littlewatermelon.shareplan.util.BmobExceptionUtil;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.LayoutBackgroundUtil;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.MyToastUtil;
 import com.sayhellototheworld.littlewatermelon.shareplan.view.base_activity.BaseSlideBcakStatusActivity;
-import com.sayhellototheworld.littlewatermelon.shareplan.view.base_activity.MyActivityManager;
 
 import cn.bmob.v3.exception.BmobException;
 
@@ -46,7 +45,6 @@ public class LoginActivity extends BaseSlideBcakStatusActivity implements BaseAc
     private Handler handler;
 
     private MySharedPreferences mPreferences;
-    private MyActivityManager mActivityManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +78,7 @@ public class LoginActivity extends BaseSlideBcakStatusActivity implements BaseAc
         if(tintManager != null){
             tintManager.setStatusBarAlpha(0);
         }
-        mActivityManager = MyActivityManager.getDestoryed();
-        mActivityManager.addActivityToList(this);
+        baseActivityManager.addActivityToList(this);
         handler = new Handler(){
             @Override
             public void handleMessage(Message msg) {
@@ -174,7 +171,7 @@ public class LoginActivity extends BaseSlideBcakStatusActivity implements BaseAc
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mActivityManager.destroyedListActivity();
+        baseActivityManager.destroyedListActivity();
     }
 
     @Override

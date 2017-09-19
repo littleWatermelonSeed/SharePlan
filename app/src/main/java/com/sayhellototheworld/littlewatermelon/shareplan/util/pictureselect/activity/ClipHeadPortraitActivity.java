@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,6 +20,7 @@ import com.sayhellototheworld.littlewatermelon.shareplan.customwidget.ClipImageV
 import com.sayhellototheworld.littlewatermelon.shareplan.customwidget.DialogLoading;
 import com.sayhellototheworld.littlewatermelon.shareplan.model.local_file.GetFile;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.PictureUtil;
+import com.sayhellototheworld.littlewatermelon.shareplan.view.base_activity.BaseNoStatusActivity;
 import com.sayhellototheworld.littlewatermelon.shareplan.view.base_activity.MyActivityManager;
 
 import java.io.File;
@@ -29,7 +29,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class ClipHeadPortraitActivity extends AppCompatActivity implements View.OnClickListener{
+public class ClipHeadPortraitActivity extends BaseNoStatusActivity implements View.OnClickListener{
 
     private LinearLayout reelectLayout;
     private TextView textView_confirm;
@@ -70,6 +70,7 @@ public class ClipHeadPortraitActivity extends AppCompatActivity implements View.
                 finish();
             }
         };
+        baseActivityManager.addActivityToUserMap(this,getClass().getSimpleName());
     }
 
     @Override

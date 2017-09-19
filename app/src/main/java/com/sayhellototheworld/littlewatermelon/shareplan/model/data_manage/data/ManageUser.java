@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.sayhellototheworld.littlewatermelon.shareplan.model.data_manage.bean.MyUserBean;
+import com.sayhellototheworld.littlewatermelon.shareplan.model.data_manage.real_data.RealTimeData;
 import com.sayhellototheworld.littlewatermelon.shareplan.model.local_file.GetFile;
 import com.sayhellototheworld.littlewatermelon.shareplan.model.local_file.ManageFile;
 import com.sayhellototheworld.littlewatermelon.shareplan.model.local_file.MySharedPreferences;
@@ -23,6 +24,7 @@ import com.sayhellototheworld.littlewatermelon.shareplan.util.PictureUtil;
 import java.io.File;
 import java.util.List;
 
+import cn.bmob.v3.BmobInstallation;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobSMS;
 import cn.bmob.v3.BmobUser;
@@ -43,14 +45,20 @@ public class ManageUser {
 
     private Context mContext;
     private Runnable mRunnable;
+    private RealTimeData mRealTimeData;
     private MySharedPreferences mPreferences;
 
-    public final static String SMS_TEMPLATE_REGISTER = "register";
+    public final static String SMS_TEMPLATE_REGISTER = "changePS";
     public final static String SMS_TEMPLATE_CHANGEPASSWORD = "changePS";
 
     public ManageUser(Context context) {
         mContext = context;
         mPreferences = MySharedPreferences.getInstance();
+        mRealTimeData = RealTimeData.getInstance();
+    }
+
+    public ManageUser() {
+
     }
 
     public void asynUpdateWhitHeadPic(final MyUserBean userBean, final BmobFile headPicFile, final UserUpdateDo done) {
@@ -74,7 +82,11 @@ public class ManageUser {
     }
 
     public void updateWhitHeadPic(final MyUserBean userBean, final BmobFile headPicFile, final UserUpdateDo done) {
-
+        if (userBean.getHeadPortrait() != null && userBean.getHeadPortrait().getUrl() != null) {
+            BmobFile bmobFile = new BmobFile();
+            bmobFile.setUrl(userBean.getHeadPortrait().getUrl());
+            bmobFile.delete();
+        }
         headPicFile.uploadblock(new UploadFileListener() {
             @Override
             public void done(final BmobException e) {
@@ -83,12 +95,12 @@ public class ManageUser {
                     public void run() {
                         if (e == null) {
                             userBean.setHeadPortrait(headPicFile);
-                            ManageFile.saveHeadPortrait(userBean.getHeadPortrait().getLocalFile(),
-                                    PictureUtil.getPicNameFromUrl(userBean.getHeadPortrait().getUrl()));
                             userBean.update(getCurrentUser().getObjectId(), new UpdateListener() {
                                 @Override
                                 public void done(BmobException e) {
                                     if (e == null) {
+                                        ManageFile.saveHeadPortrait(userBean.getHeadPortrait().getLocalFile(),
+                                                PictureUtil.getPicNameFromUrl(userBean.getHeadPortrait().getUrl()));
                                         done.updateSuccess();
                                     } else {
                                         done.updateFail(e);
@@ -152,7 +164,7 @@ public class ManageUser {
                     done.loginSuccess(myUserBean);
                     return;
                 } else {
-                    downPic(myUserBean,done);
+                    downPic(myUserBean, done);
                 }
             }
 
@@ -166,7 +178,7 @@ public class ManageUser {
     }
 
     public void login(String userName, String password, final UserLoginDo done) {
-        MyUserBean bu2 = new MyUserBean();
+        final MyUserBean bu2 = new MyUserBean();
         bu2.setUsername(userName);
         bu2.setPassword(password);
         bu2.login(new SaveListener<MyUserBean>() {
@@ -176,6 +188,18 @@ public class ManageUser {
                     @Override
                     public void run() {
                         if (e == null) {
+                            BmobInstallation installation = new BmobInstallation();
+                            bu2.setLoginDeviceId(installation.getInstallationId());
+                            bu2.update(getCurrentUser().getObjectId(), new UpdateListener() {
+                                @Override
+                                public void done(BmobException e) {
+                                    if (e == null) {
+                                        mRealTimeData.subUserLoginDeviceId(getCurrentUser());
+                                    }else {
+                                        BmobExceptionUtil.dealWithException(mContext, e);
+                                    }
+                                }
+                            });
                             done.loginSuccess(myUserBean);
                         } else {
                             done.loginFail(e);
@@ -190,7 +214,7 @@ public class ManageUser {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                downLoadHeadPortrait(myUserBean,done);
+                downLoadHeadPortrait(myUserBean, done);
             }
         };
         JoinToThreadPool.joinToCache(runnable);
@@ -198,12 +222,12 @@ public class ManageUser {
 
     private void downLoadHeadPortrait(final MyUserBean myUserBean, final UserLoginDo done) {
         if (myUserBean.getHeadPortrait() == null || myUserBean.getHeadPortrait().getUrl() == null ||
-                ManageFile.getHeadPortrait(PictureUtil.getPicNameFromUrl(myUserBean.getHeadPortrait().getUrl())) != null){
-            Log.i("niyuanjie","没有头像或已有本地头像");
-            downLoadSkin(myUserBean,done);
+                ManageFile.getHeadPortrait(PictureUtil.getPicNameFromUrl(myUserBean.getHeadPortrait().getUrl())) != null) {
+            Log.i("niyuanjie", "没有头像或已有本地头像");
+            downLoadSkin(myUserBean, done);
             return;
         }
-        Log.i("niyuanjie","有头像且没有本地头像 开始下载头像");
+        Log.i("niyuanjie", "有头像且没有本地头像 开始下载头像");
         final BmobFile headPic = new BmobFile(PictureUtil.getPicNameFromUrl(myUserBean.getHeadPortrait().getUrl()) + ".png",
                 "", myUserBean.getHeadPortrait().getUrl());
         File saveFile = new File(GetFile.getNewInternalHeadImageFile(), headPic.getFilename());
@@ -215,7 +239,7 @@ public class ManageUser {
 
             @Override
             public void downLoadSuccess(String savePath) {
-                downLoadSkin(myUserBean,done);
+                downLoadSkin(myUserBean, done);
             }
 
             @Override
@@ -238,8 +262,8 @@ public class ManageUser {
 
     private void downLoadSkin(final MyUserBean myUserBean, final UserLoginDo done) {
         if (myUserBean.getSkin() == null || myUserBean.getSkin().getUrl() == null ||
-                ManageFile.getSelfBackground(PictureUtil.getPicNameFromUrl(myUserBean.getSkin().getUrl())) != null){
-            Log.i("niyuanjie","没有皮肤或已有本地皮肤");
+                ManageFile.getSelfBackground(PictureUtil.getPicNameFromUrl(myUserBean.getSkin().getUrl())) != null) {
+            Log.i("niyuanjie", "没有皮肤或已有本地皮肤");
             ((Activity) mContext).runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -248,7 +272,7 @@ public class ManageUser {
             });
             return;
         }
-        Log.i("niyuanjie","有头像且没有有本地皮肤 开始下载皮肤");
+        Log.i("niyuanjie", "有头像且没有有本地皮肤 开始下载皮肤");
         final BmobFile skin = new BmobFile(PictureUtil.getPicNameFromUrl(myUserBean.getSkin().getUrl()) + ".png",
                 "", myUserBean.getSkin().getUrl());
         File saveFile = new File(GetFile.getNewInternalSkinImageFile(), skin.getFilename());
@@ -368,12 +392,24 @@ public class ManageUser {
 
     }
 
-    private void registerAfterVerifySms(MyUserBean userBean, final UserRegisterDo done) {
+    private void registerAfterVerifySms(final MyUserBean userBean, final UserRegisterDo done) {
+
         userBean.signUp(new SaveListener<MyUserBean>() {
             @Override
-            public void done(MyUserBean userBean, BmobException e) {
+            public void done(final MyUserBean userBean, BmobException e) {
                 if (e == null) {
-                    loginAfterRegister(userBean);
+                    BmobInstallation installation = new BmobInstallation();
+                    userBean.setLoginDeviceId(installation.getInstallationId());
+                    userBean.update(getCurrentUser().getObjectId(), new UpdateListener() {
+                        @Override
+                        public void done(BmobException e) {
+                            if (e == null) {
+                                mRealTimeData.subUserLoginDeviceId(getCurrentUser());
+                            }else {
+                                BmobExceptionUtil.dealWithException(mContext, e);
+                            }
+                        }
+                    });
                     done.registerSuccess();
                 } else {
                     done.registerFail(e);
@@ -385,10 +421,30 @@ public class ManageUser {
     private void loginAfterRegister(MyUserBean userBean) {
         userBean.login(new SaveListener<MyUserBean>() {
             @Override
-            public void done(MyUserBean userBean, BmobException e) {
+            public void done(final MyUserBean userBean, BmobException e) {
                 if (e == null) {
-
+//                    final BmobInstallation installation = new BmobInstallation();
+//                    installation.save(new SaveListener<String>() {
+//                        @Override
+//                        public void done(String s, BmobException e) {
+//                            if (e == null){
+//                                userBean.setInstallation(installation);
+//                                userBean.update(getCurrentUser().getObjectId(), new UpdateListener() {
+//                                    @Override
+//                                    public void done(BmobException e) {
+//                                        if (e != null){
+//                                            BmobExceptionUtil.dealWithException(mContext,e);
+//                                        }
+//                                    }
+//                                });
+//                            }else {
+//                                Log.i("niyuanjie","installation保存失败");
+//                                BmobExceptionUtil.dealWithException(mContext,e);
+//                            }
+//                        }
+//                    });
                 } else {
+                    Log.i("niyuanjie", "注册后登录失败");
                     if (e.getErrorCode() == 9018)
                         return;
                     BmobExceptionUtil.dealWithException(mContext, e, "loginAfterRegister");
@@ -397,13 +453,19 @@ public class ManageUser {
         });
     }
 
-    public MyUserBean getCurrentUser() {
+    public static MyUserBean getCurrentUser() {
         MyUserBean userBean = BmobUser.getCurrentUser(MyUserBean.class);
         if (userBean != null) {
             return userBean;
         } else {
             return null;
         }
+    }
+
+    public static void loginOutUser(){
+        RealTimeData.getInstance().unsubUserLoginDeviceId(getCurrentUser());
+        BmobUser.logOut();
+        MySharedPreferences.getInstance().saveMessage(MySharedPreferences.KEY_USER_LOGIN_STATUS,false);
     }
 
 }

@@ -22,7 +22,6 @@ import com.sayhellototheworld.littlewatermelon.shareplan.util.LayoutBackgroundUt
 import com.sayhellototheworld.littlewatermelon.shareplan.util.MyToastUtil;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.StatusBarUtils;
 import com.sayhellototheworld.littlewatermelon.shareplan.view.base_activity.BaseSlideBcakStatusActivity;
-import com.sayhellototheworld.littlewatermelon.shareplan.view.base_activity.MyActivityManager;
 
 public class RegisterUserActivity extends BaseSlideBcakStatusActivity implements BaseActivityDo,View.OnClickListener {
 
@@ -40,7 +39,6 @@ public class RegisterUserActivity extends BaseSlideBcakStatusActivity implements
     private String keyCode;
     private String passwordOne;
     private String passwordTwo;
-    private MyActivityManager mActivityManager;
     private MyUserBean userBean;
     private ViRegisterUserCoDo rud;
 
@@ -81,8 +79,7 @@ public class RegisterUserActivity extends BaseSlideBcakStatusActivity implements
             tintManager.setStatusBarAlpha(0);
         }
         rud = new ControlRegisterUser(this,button_getKeyCode);
-        mActivityManager = MyActivityManager.getDestoryed();
-        mActivityManager.addActivityToList(this);
+        baseActivityManager.addActivityToList(this);
     }
 
     @Override
@@ -114,7 +111,7 @@ public class RegisterUserActivity extends BaseSlideBcakStatusActivity implements
                 finish();
                 break;
             case R.id.activity_register_user_imageviewCancle:
-            mActivityManager.destroyedListActivity();
+                baseActivityManager.destroyedListActivity();
                 break;
             case R.id.activity_register_user_buttonGetKeyCode:
                 if(!verificationPhoneNum()){

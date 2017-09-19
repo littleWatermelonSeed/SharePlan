@@ -50,6 +50,7 @@ public class UserFragment extends Fragment implements BaseActivityDo, View.OnCli
     private Button button_register;
     private Button button_login;
     private RelativeLayout mRelativeLayout_setting;
+    private RelativeLayout mRelativeLayout_setSkin;
 
     private ControlUserFragment cuf;
 
@@ -85,9 +86,10 @@ public class UserFragment extends Fragment implements BaseActivityDo, View.OnCli
         imageView_userSex = (ImageView) mView.findViewById(R.id.fragment_user_sex);
         imageView_userSex.setOnClickListener(this);
         parentLayout = (AutoLinearLayout) mView.findViewById(R.id.fragment_user_informationBackground);
-        parentLayout.setOnClickListener(this);
         mRelativeLayout_setting = (RelativeLayout) mView.findViewById(R.id.fragment_user_setting);
         mRelativeLayout_setting.setOnClickListener(this);
+        mRelativeLayout_setSkin = (RelativeLayout) mView.findViewById(R.id.fragment_user_setSkin);
+        mRelativeLayout_setSkin.setOnClickListener(this);
         itemScrollView = (ScrollView) mView.findViewById(R.id.fragment_user_ItemScrollView);
         registerAndLoginLayout = (LinearLayout) mView.findViewById(R.id.fragment_user_registerAndLoginLayout);
         button_login = (Button) mView.findViewById(R.id.fragment_user_loginButton);
@@ -117,7 +119,7 @@ public class UserFragment extends Fragment implements BaseActivityDo, View.OnCli
             case R.id.fragment_user_sex:
                 informationClick();
                 break;
-            case R.id.fragment_user_informationBackground:
+            case R.id.fragment_user_setSkin:
                 setInforBackground();
                 break;
             case R.id.fragment_user_setting:

@@ -2,29 +2,32 @@ package com.sayhellototheworld.littlewatermelon.shareplan;
 
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.bumptech.glide.Glide;
 import com.sayhellototheworld.littlewatermelon.shareplan.model.data_manage.bean.MyUserBean;
-import com.sayhellototheworld.littlewatermelon.shareplan.model.data_manage.data.ManageUser;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.BmobExceptionUtil;
-import com.sayhellototheworld.littlewatermelon.shareplan.util.PictureUtil;
+import com.sayhellototheworld.littlewatermelon.shareplan.view.base_activity.BaseStatusActivity;
 
 import java.io.File;
 
+import cn.bmob.v3.BmobInstallation;
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.DownloadFileListener;
 import cn.bmob.v3.listener.QueryListener;
 import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class TestActivity extends AppCompatActivity implements View.OnClickListener {
+import static cn.bmob.v3.BmobUser.getCurrentUser;
+
+public class TestActivity extends BaseStatusActivity implements View.OnClickListener {
 
     private CircleImageView mCircleImageView;
     private Button button_shangchuan;
@@ -46,6 +49,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         button_shangchuan.setOnClickListener(this);
         button_xiazai = (Button) findViewById(R.id.activity_test_xiazai);
         button_xiazai.setOnClickListener(this);
+        baseActivityManager.addActivityToUserMap(this,getClass().getSimpleName());
     }
 
     @Override
@@ -61,18 +65,53 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void shangchuan2(){
-        ManageUser manageUser = new ManageUser(this);
-        MyUserBean myUserBean = manageUser.getCurrentUser();
-        if(myUserBean.getHeadPortrait().getUrl() !=null){
-            Log.i("niyuanjie","头像url = " + myUserBean.getHeadPortrait().getUrl());
-            Log.i("niyuanjie","头像name = " + PictureUtil.getPicNameFromUrl(myUserBean.getHeadPortrait().getUrl()));
-        }else {
-            Log.i("niyuanjie","头像url不存在");
-        }
+        final MyUserBean userBean = BmobUser.getCurrentUser(MyUserBean.class);
+        final BmobInstallation installation = new BmobInstallation();
+        installation.update(new UpdateListener() {
+            @Override
+            public void done(BmobException e) {
+                if (e == null){
+                    BmobInstallation installation = new BmobInstallation();
+                    userBean.setLoginDeviceId(installation.getInstallationId());
+                    userBean.update(getCurrentUser().getObjectId(), new UpdateListener() {
+                        @Override
+                        public void done(BmobException e) {
+                            if (e != null){
+                                Log.i("niyuanjie","userBean installation 保存失败");
+                                BmobExceptionUtil.dealWithException(TestActivity.this,e);
+                            }
+                        }
+                    });
+                }else {
+                    Log.i("niyuanjie","installation保存失败");
+                    BmobExceptionUtil.dealWithException(TestActivity.this,e);
+                }
+            }
+        });
+//        installation.save(new SaveListener<String>() {
+//            @Override
+//            public void done(String s, BmobException e) {
+//                if (e == null){
+//                    userBean.setInstallation(installation);
+//                    userBean.update(getCurrentUser().getObjectId(), new UpdateListener() {
+//                        @Override
+//                        public void done(BmobException e) {
+//                            if (e != null){
+//                                Log.i("niyuanjie","userBean installation 保存失败");
+//                                BmobExceptionUtil.dealWithException(TestActivity.this,e);
+//                            }
+//                        }
+//                    });
+//                }else {
+//                    Log.i("niyuanjie","installation保存失败");
+//                    BmobExceptionUtil.dealWithException(TestActivity.this,e);
+//                }
+//            }
+//        });
     }
 
     private void xiazai2(){
-
+//        Log.i("niyuanjie","当前activity名字：" + RealTimeData.getInstance().getTopActivityName());
     }
 
     private void shangchuan() {

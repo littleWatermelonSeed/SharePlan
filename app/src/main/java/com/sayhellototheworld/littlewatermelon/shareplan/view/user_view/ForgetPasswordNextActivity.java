@@ -19,7 +19,6 @@ import com.sayhellototheworld.littlewatermelon.shareplan.util.LayoutBackgroundUt
 import com.sayhellototheworld.littlewatermelon.shareplan.util.MyToastUtil;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.StatusBarUtils;
 import com.sayhellototheworld.littlewatermelon.shareplan.view.base_activity.BaseSlideBcakStatusActivity;
-import com.sayhellototheworld.littlewatermelon.shareplan.view.base_activity.MyActivityManager;
 
 public class ForgetPasswordNextActivity extends BaseSlideBcakStatusActivity implements BaseActivityDo,View.OnClickListener{
 
@@ -37,7 +36,6 @@ public class ForgetPasswordNextActivity extends BaseSlideBcakStatusActivity impl
     private String psOne;
     private String psTwo;
 
-    public MyActivityManager mActivityManager;
     private ControlForgetPasswordNext cfpn;
 
     @Override
@@ -76,8 +74,7 @@ public class ForgetPasswordNextActivity extends BaseSlideBcakStatusActivity impl
         if(tintManager != null){
             tintManager.setStatusBarAlpha(0);
         }
-        mActivityManager = MyActivityManager.getDestoryed();
-        mActivityManager.addActivityToList(this);
+        baseActivityManager.addActivityToList(this);
         phoneNum = getIntent().getStringExtra("phoneNum");
         cfpn = new ControlForgetPasswordNext(this,button_getSmsCode,phoneNum);
     }
@@ -139,7 +136,7 @@ public class ForgetPasswordNextActivity extends BaseSlideBcakStatusActivity impl
                 finish();
                 break;
             case R.id.activity_forget_password_next_imageViewCancle:
-                mActivityManager.destroyedListActivity();
+                baseActivityManager.destroyedListActivity();
                 break;
             case R.id.activity_forget_password_next_buttonGetKeyCode:
                 cfpn.sentSmsCode(phoneNum);

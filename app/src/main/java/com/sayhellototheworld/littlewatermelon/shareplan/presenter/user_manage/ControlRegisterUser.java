@@ -5,6 +5,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -110,6 +111,7 @@ public class ControlRegisterUser implements ViRegisterUserCoDo,UserGetKeyCodeDo,
         keyCodeSend.setClickable(true);
         keyCodeSend.setText("重新发送");
         keyCodeSend.setBackgroundResource(R.drawable.state_button1);
+        Log.i("niyuanjie","短信发送失败");
         BmobExceptionUtil.dealWithException(mContext, ex, "getKeyCode");
     }
 

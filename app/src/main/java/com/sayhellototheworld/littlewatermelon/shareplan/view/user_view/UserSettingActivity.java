@@ -7,14 +7,12 @@ import android.view.View;
 import android.widget.Button;
 
 import com.sayhellototheworld.littlewatermelon.shareplan.R;
+import com.sayhellototheworld.littlewatermelon.shareplan.customwidget.DialogConfirm;
 import com.sayhellototheworld.littlewatermelon.shareplan.customwidget.LiTopBar;
-import com.sayhellototheworld.littlewatermelon.shareplan.model.local_file.MySharedPreferences;
+import com.sayhellototheworld.littlewatermelon.shareplan.model.data_manage.data.ManageUser;
 import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.base_interface.BaseActivityDo;
 import com.sayhellototheworld.littlewatermelon.shareplan.presenter.centerplaza.ControlUserFragment;
-import com.sayhellototheworld.littlewatermelon.shareplan.customwidget.DialogConfirm;
 import com.sayhellototheworld.littlewatermelon.shareplan.view.base_activity.BaseSlideBcakStatusActivity;
-
-import cn.bmob.v3.BmobUser;
 
 public class UserSettingActivity extends BaseSlideBcakStatusActivity implements BaseActivityDo, View.OnClickListener {
 
@@ -62,12 +60,12 @@ public class UserSettingActivity extends BaseSlideBcakStatusActivity implements 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.activity_user_setting_loginOutButton:
-                LoginOut();
+                loginOut();
                 break;
         }
     }
 
-    private void LoginOut() {
+    private void loginOut() {
         DialogConfirm.newInstance("提示", "确定退出登录?", new DialogConfirm.CancleAndOkDo() {
             @Override
             public void cancle() {
@@ -76,11 +74,11 @@ public class UserSettingActivity extends BaseSlideBcakStatusActivity implements 
 
             @Override
             public void ok() {
-                BmobUser.logOut();
+                ManageUser.loginOutUser();
+
                 ControlUserFragment.syncUserFragment();
-                MySharedPreferences.getInstance().saveMessage(MySharedPreferences.KEY_USER_LOGIN_STATUS,false);
-                finish();
                 LoginActivity.startLoginActivity(UserSettingActivity.this);
+                finish();
             }
         }).setMargin(60)
                 .setOutCancel(false)

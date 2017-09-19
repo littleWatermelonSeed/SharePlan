@@ -23,20 +23,13 @@ public class BaseStatusActivity extends AutoLayoutActivity {
 
     protected boolean isActive = true;
     protected SystemBarTintManager tintManager;
+    protected MyActivityManager baseActivityManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            setTranslucentStatus(true);
-            tintManager = new SystemBarTintManager(this);
-            tintManager.setStatusBarTintEnabled(true);
-            tintManager.setStatusBarTintResource(R.color.white1);//通知栏所需颜色
-        }
+        baseInit();
 //        else if (Build.VERSION.SDK_INT >= 21) {
 //            View decorView = getWindow().getDecorView();
 //            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
@@ -45,6 +38,21 @@ public class BaseStatusActivity extends AutoLayoutActivity {
 //            getWindow().setStatusBarColor(Color.TRANSPARENT);
 //        }
 
+    }
+
+    private void baseInit(){
+        //禁止屏幕横屏
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        //禁止自动弹出软键盘
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            setTranslucentStatus(true);
+            tintManager = new SystemBarTintManager(this);
+            tintManager.setStatusBarTintEnabled(true);
+            tintManager.setStatusBarTintResource(R.color.white1);//通知栏所需颜色
+        }
+        baseActivityManager = MyActivityManager.getDestoryed();
     }
 
     protected SystemBarTintManager getTintManager() {
@@ -81,6 +89,18 @@ public class BaseStatusActivity extends AutoLayoutActivity {
         if (!isActive){
             isActive = true;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        baseActivityManager.setTopActivity(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        baseActivityManager.removeActivityFromUserMap(getClass().getSimpleName());
     }
 
     protected boolean isAppOnForeground() {

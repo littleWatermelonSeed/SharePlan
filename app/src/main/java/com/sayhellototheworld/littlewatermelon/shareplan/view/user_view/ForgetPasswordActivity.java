@@ -20,7 +20,6 @@ import com.sayhellototheworld.littlewatermelon.shareplan.util.LayoutBackgroundUt
 import com.sayhellototheworld.littlewatermelon.shareplan.util.MyToastUtil;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.StatusBarUtils;
 import com.sayhellototheworld.littlewatermelon.shareplan.view.base_activity.BaseSlideBcakStatusActivity;
-import com.sayhellototheworld.littlewatermelon.shareplan.view.base_activity.MyActivityManager;
 
 public class ForgetPasswordActivity extends BaseSlideBcakStatusActivity implements BaseActivityDo,View.OnClickListener{
 
@@ -31,9 +30,7 @@ public class ForgetPasswordActivity extends BaseSlideBcakStatusActivity implemen
     private Button button_next;
 
     private String phoneNum;
-    private String smsCode;
 
-    private MyActivityManager mActivityManager;
     private ControlForgetPassword cfp;
 
     @Override
@@ -68,8 +65,7 @@ public class ForgetPasswordActivity extends BaseSlideBcakStatusActivity implemen
             tintManager.setStatusBarAlpha(0);
         }
         cfp = new ControlForgetPassword(this);
-        mActivityManager = MyActivityManager.getDestoryed();
-        mActivityManager.addActivityToList(this);
+        baseActivityManager.addActivityToList(this);
     }
 
     @Override
@@ -101,10 +97,10 @@ public class ForgetPasswordActivity extends BaseSlideBcakStatusActivity implemen
                 if (!verifyPhoneNumFormat()){
                     return;
                 }
-                cfp.verifyUser(phoneNum,smsCode);
+                cfp.verifyUser(phoneNum);
                 break;
             case R.id.activity_forget_password_imageViewCancle:
-                mActivityManager.destroyedListActivity();
+                baseActivityManager.destroyedListActivity();
                 break;
             case R.id.activity_forget_password_imageViewBack:
                 finish();
