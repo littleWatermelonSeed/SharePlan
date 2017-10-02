@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.othershe.nicedialog.BaseNiceDialog;
 import com.othershe.nicedialog.ViewHolder;
 import com.sayhellototheworld.littlewatermelon.shareplan.R;
@@ -59,6 +60,7 @@ public class ClipHeadPortraitActivity extends BaseNoStatusActivity implements Vi
         mImage = (ClipImageView) findViewById(R.id.activity_clip_head_portrait_clipImageView);
         Glide.with(this)
                 .load(new File(imagePath))
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(mImage);
         MyActivityManager.getDestoryed().addActivityToList(this);
         handler = new Handler(){

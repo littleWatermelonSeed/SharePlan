@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.sayhellototheworld.littlewatermelon.shareplan.R;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.pictureselect.activity.ClipHeadPortraitActivity;
+import com.sayhellototheworld.littlewatermelon.shareplan.util.pictureselect.activity.PreviewBackgroundActivity;
 
 import java.io.File;
 import java.util.List;
@@ -179,7 +180,7 @@ public class GridAdapter extends BaseAdapter{
                     toHeadDo(position);
                     break;
                 case STYLE_BACKGROUND:
-                    toBackgroundDo();
+                    toBackgroundDo(position);
                     break;
                 case STYLE_PLAN:
                     toPlanDo();
@@ -205,7 +206,9 @@ public class GridAdapter extends BaseAdapter{
         ClipHeadPortraitActivity.startActivity(context,images.get(position).getPath());
     }
 
-    private void toBackgroundDo(){}
+    private void toBackgroundDo(int position){
+        PreviewBackgroundActivity.startActivity(context,images.get(position).getPath());
+    }
 
     private void toPlanDo(){}
 

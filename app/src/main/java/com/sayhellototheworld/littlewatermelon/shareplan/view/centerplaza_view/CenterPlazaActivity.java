@@ -55,6 +55,7 @@ public class CenterPlazaActivity extends BaseStatusActivity implements View.OnCl
     @Override
     public void init(){
         initParam();
+        initShow();
         initWidget();
         setFragment(R.id.activity_center_plaza_bottomBar_home);
     }

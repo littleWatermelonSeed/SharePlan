@@ -10,8 +10,8 @@ import com.othershe.nicedialog.BaseNiceDialog;
 import com.othershe.nicedialog.ViewHolder;
 import com.sayhellototheworld.littlewatermelon.shareplan.R;
 import com.sayhellototheworld.littlewatermelon.shareplan.customwidget.DialogLoading;
-import com.sayhellototheworld.littlewatermelon.shareplan.model.data_manage.bean.MyUserBean;
-import com.sayhellototheworld.littlewatermelon.shareplan.model.data_manage.data.ManageUser;
+import com.sayhellototheworld.littlewatermelon.shareplan.model.bmom.bean.MyUserBean;
+import com.sayhellototheworld.littlewatermelon.shareplan.model.bmom.data_manager.BmobManageUser;
 import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.base_interface.ShowCurUserInfo;
 import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.userManage_interface.UserUpdateDo;
 import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.userManage_interface.ViUpdateUserCoDo;
@@ -31,7 +31,7 @@ public class ControlUpdateUser implements ViUpdateUserCoDo, UserUpdateDo {
 
     private Context mContext;
     private ShowCurUserInfo cu;
-    private ManageUser userManager;
+    private BmobManageUser userManager;
     private MyUserBean userBean = null;
     private BaseNiceDialog dialog;
 
@@ -40,7 +40,7 @@ public class ControlUpdateUser implements ViUpdateUserCoDo, UserUpdateDo {
     public ControlUpdateUser(Context context, ShowCurUserInfo cu) {
         mContext = context;
         this.cu = cu;
-        userManager = new ManageUser(mContext);
+        userManager = new BmobManageUser(mContext);
         userBean = userManager.getCurrentUser();
 
         handler = new Handler(){

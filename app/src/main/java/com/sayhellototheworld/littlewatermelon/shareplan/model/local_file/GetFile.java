@@ -50,8 +50,8 @@ public class GetFile {
         return file;
     }
 
-    public static File getExternalCacheImageFile(){
-        File fileDir = new File(FilePath.getExternalCacheDirectory("sharePlan"),"cache");
+    public static File getExternalPlanImageFile(){
+        File fileDir = new File(FilePath.getExternalCacheDirectory("sharePlan"),"plan");
         if (!fileDir.exists()){
             fileDir.mkdir();
         }

@@ -1,5 +1,6 @@
 package com.sayhellototheworld.littlewatermelon.shareplan.util;
 
+import android.net.Uri;
 import android.util.DisplayMetrics;
 
 import com.sayhellototheworld.littlewatermelon.shareplan.SPApplication;
@@ -18,6 +19,11 @@ public class SysUtil {
     public static int getDisplayWidth(){
         DisplayMetrics dm = SPApplication.getAppContext().getResources().getDisplayMetrics();
         return dm.widthPixels;
+    }
+
+    public static Uri getResourceUri(int resId)
+    {
+        return Uri.parse("android.resource://"+SPApplication.getAppContext().getPackageName()+"/"+resId);
     }
 
 }

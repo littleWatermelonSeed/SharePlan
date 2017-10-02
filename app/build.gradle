@@ -10,6 +10,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -30,6 +31,8 @@ dependencies {
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.zhy:autolayout:1.4.5'
+    compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.4-alpha-1'
+    compile 'com.qht1003077897.timeline:timelinelibrary:0.1'
     compile 'com.contrarywind:Android-PickerView:3.2.6'
     compile 'com.github.Othershe:NiceDialog:1.1.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
@@ -39,5 +42,6 @@ dependencies {
     compile 'cn.bmob.android:bmob-push:0.8'
     compile 'cn.bmob.android:bmob-im:2.0.5@aar'
     compile 'cn.bmob.android:http-legacy:1.0'
+    compile 'com.android.support:support-vector-drawable:25.3.1'
     testCompile 'junit:junit:4.12'
 }

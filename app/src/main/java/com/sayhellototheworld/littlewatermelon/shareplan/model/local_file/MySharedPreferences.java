@@ -15,6 +15,8 @@ public class MySharedPreferences {
     public final static String KEY_USER_PASSWORD = "userPS";
     public final static String KEY_USER_LOGIN_STATUS = "loginStatus";
 
+    public final static String KEY_FIRST_LOGIN = "firstLogin";
+
     private Context mContext;
 
     private SharedPreferences mSharedPreferences;

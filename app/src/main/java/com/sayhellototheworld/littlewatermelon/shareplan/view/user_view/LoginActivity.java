@@ -17,11 +17,12 @@ import com.othershe.nicedialog.BaseNiceDialog;
 import com.othershe.nicedialog.ViewHolder;
 import com.sayhellototheworld.littlewatermelon.shareplan.R;
 import com.sayhellototheworld.littlewatermelon.shareplan.customwidget.DialogLoading;
-import com.sayhellototheworld.littlewatermelon.shareplan.model.data_manage.bean.MyUserBean;
-import com.sayhellototheworld.littlewatermelon.shareplan.model.data_manage.data.ManageUser;
+import com.sayhellototheworld.littlewatermelon.shareplan.model.bmom.bean.MyUserBean;
+import com.sayhellototheworld.littlewatermelon.shareplan.model.bmom.data_manager.BmobManageUser;
 import com.sayhellototheworld.littlewatermelon.shareplan.model.local_file.MySharedPreferences;
 import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.base_interface.BaseActivityDo;
 import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.userManage_interface.UserLoginDo;
+import com.sayhellototheworld.littlewatermelon.shareplan.presenter.centerplaza.ControlPlanFragment;
 import com.sayhellototheworld.littlewatermelon.shareplan.presenter.centerplaza.ControlUserFragment;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.BmobExceptionUtil;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.LayoutBackgroundUtil;
@@ -157,8 +158,8 @@ public class LoginActivity extends BaseSlideBcakStatusActivity implements BaseAc
                         dialog = baseNiceDialog;
                         TextView textView = viewHolder.getView(R.id.nicedialog_loading_textView);
                         textView.setText("登录中...");
-                        ManageUser manageUser = new ManageUser(LoginActivity.this);
-                        manageUser.loginAndSyncUser(userID,userPassword,LoginActivity.this);
+                        BmobManageUser bmobManageUser = new BmobManageUser(LoginActivity.this);
+                        bmobManageUser.loginAndSyncUser(userID,userPassword,LoginActivity.this);
                     }
                 });
     }
@@ -181,6 +182,7 @@ public class LoginActivity extends BaseSlideBcakStatusActivity implements BaseAc
         mPreferences.saveMessage(MySharedPreferences.KEY_USER_LOGIN_STATUS,true);
         DialogLoading.dismissLoadingDialog(handler,dialog,"登录成功", DialogLoading.MSG_SUCCESS);
         ControlUserFragment.syncUserFragment();
+        ControlPlanFragment.syncPlanFragment();
         finish();
     }
 

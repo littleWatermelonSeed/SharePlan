@@ -39,7 +39,7 @@
         android:layout_below="@+id/activity_write_line"
         android:layout_marginTop="10px"
         android:background="@android:drawable/editbox_background_normal"
-        android:hint="计划标题..."
+        android:hint="计划标题(30字以内)..."
         android:maxLength="30"
         android:singleLine="true"
         android:textColor="@color/white4"
@@ -63,19 +63,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
+                android:paddingTop="10px"
+                android:paddingBottom="10px"
+                android:lineSpacingMultiplier="1.5"
                 android:gravity="left"
-                android:hint="计划内容..."
+                android:hint="计划内容(500字以内)..."
                 android:maxLength="500"
                 android:minLines="4"
                 android:textColor="@color/white4"
                 android:textSize="35px"/>
-
-            <ImageView
-                android:layout_width="150px"
-                android:layout_height="150px"
-                android:layout_marginTop="10px"
-                android:src="@drawable/addpicture"/>
-
 
             <TextView
                 android:id="@+id/activity_write_beginTime"
@@ -91,12 +87,21 @@
                 android:id="@+id/activity_write_endTime"
                 android:layout_width="wrap_content"
                 android:layout_height="50px"
-                android:layout_marginTop="15px"
+                android:layout_marginTop="20px"
                 android:gravity="center_vertical"
                 android:text="结束时间："
                 android:textColor="@color/white4"
                 android:textSize="30px"/>
 
+            <com.sayhellototheworld.littlewatermelon.shareplan.customwidget.MyGridView
+                android:id="@+id/activity_write_cardView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numColumns="3"
+                android:layout_marginTop="20px"
+                android:gravity="center_horizontal"
+                android:horizontalSpacing="15dp"
+                android:verticalSpacing="8dp"/>
 
         </LinearLayout>
     </ScrollView>
@@ -104,30 +109,43 @@
     <RelativeLayout
         android:id="@+id/activity_write_bottomLayout"
         android:layout_width="match_parent"
-        android:layout_height="60px"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:paddingTop="15px"
+        android:paddingBottom="15px">
 
         <TextView
             android:id="@+id/activity_write_place"
             android:layout_width="wrap_content"
-            android:layout_height="50px"
-            android:background="@android:drawable/editbox_background_normal"
+            android:layout_height="wrap_content"
+            android:background="@drawable/radius_background_buttongreen4"
             android:gravity="center"
             android:text="成都 红光"
             android:textColor="@color/white4"
-            android:textSize="25px"/>
+            android:layout_marginLeft="15px"
+            android:textSize="25px"
+            android:minWidth="150px"
+            android:paddingBottom="5px"
+            android:paddingTop="5px"
+            android:layout_centerVertical="true"
+            />
 
         <TextView
             android:id="@+id/activity_write_permission"
             android:layout_width="wrap_content"
-            android:layout_height="50px"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:background="@android:drawable/editbox_background_normal"
+            android:background="@drawable/radius_background_buttongreen4"
             android:gravity="center"
             android:text="公开"
+            android:layout_marginRight="15px"
             android:textColor="@color/white4"
-            android:textSize="25px"/>
+            android:textSize="25px"
+            android:minWidth="100px"
+            android:paddingBottom="5px"
+            android:paddingTop="5px"
+            android:layout_centerVertical="true"/>
     </RelativeLayout>
 
 </RelativeLayout>

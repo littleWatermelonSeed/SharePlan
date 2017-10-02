@@ -36,6 +36,12 @@
         </LinearLayout>
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="更换用户头像"/>
+
+        <TextView
             android:id="@+id/activity_clip_head_portrait_confirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

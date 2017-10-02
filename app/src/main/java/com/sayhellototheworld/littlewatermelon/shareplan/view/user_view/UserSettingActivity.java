@@ -9,8 +9,9 @@ import android.widget.Button;
 import com.sayhellototheworld.littlewatermelon.shareplan.R;
 import com.sayhellototheworld.littlewatermelon.shareplan.customwidget.DialogConfirm;
 import com.sayhellototheworld.littlewatermelon.shareplan.customwidget.LiTopBar;
-import com.sayhellototheworld.littlewatermelon.shareplan.model.data_manage.data.ManageUser;
+import com.sayhellototheworld.littlewatermelon.shareplan.model.bmom.data_manager.BmobManageUser;
 import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.base_interface.BaseActivityDo;
+import com.sayhellototheworld.littlewatermelon.shareplan.presenter.centerplaza.ControlPlanFragment;
 import com.sayhellototheworld.littlewatermelon.shareplan.presenter.centerplaza.ControlUserFragment;
 import com.sayhellototheworld.littlewatermelon.shareplan.view.base_activity.BaseSlideBcakStatusActivity;
 
@@ -74,9 +75,10 @@ public class UserSettingActivity extends BaseSlideBcakStatusActivity implements 
 
             @Override
             public void ok() {
-                ManageUser.loginOutUser();
+                BmobManageUser.loginOutUser();
 
                 ControlUserFragment.syncUserFragment();
+                ControlPlanFragment.syncPlanFragment();
                 LoginActivity.startLoginActivity(UserSettingActivity.this);
                 finish();
             }

@@ -13,6 +13,7 @@
     <color name="white3">#c2c2c2</color>
     <color name="white4">#a1a1a1</color>
     <color name="white5">#fafafa</color>
+    <color name="white6">#efefef</color>
     <color name="gray">#c9c7c7</color>
     <color name="black">#030303</color>
     <color name="black1">#8f8f8f</color>
@@ -26,4 +27,11 @@
     <color name="red2">#f43333</color>
     <color name="lowblcak">#767575</color>
     <color name="background">#77000000</color>
+    <color name="line_color">#f3ca7e</color>
+    <color name="plan_list_text_color">#afdab9</color>
+    <color name="plan_title_text_color">#59667c</color>
+    <color name="plan_user_name_text_color">#ff4d31</color>
+    <color name="plan_text_statue_ing">#96bc00</color>
+    <color name="plan_text_statue_finished">#afdab9</color>
+    <color name="plan_text_statue_unfinished">#fc1b1b</color>
 </resources>

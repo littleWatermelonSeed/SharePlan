@@ -10,8 +10,8 @@ import com.othershe.nicedialog.BaseNiceDialog;
 import com.othershe.nicedialog.ViewHolder;
 import com.sayhellototheworld.littlewatermelon.shareplan.R;
 import com.sayhellototheworld.littlewatermelon.shareplan.customwidget.DialogLoading;
-import com.sayhellototheworld.littlewatermelon.shareplan.model.data_manage.bean.MyUserBean;
-import com.sayhellototheworld.littlewatermelon.shareplan.model.data_manage.data.ManageUser;
+import com.sayhellototheworld.littlewatermelon.shareplan.model.bmom.bean.MyUserBean;
+import com.sayhellototheworld.littlewatermelon.shareplan.model.bmom.data_manager.BmobManageUser;
 import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.userManage_interface.QueryUserDo;
 import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.userManage_interface.ViForgetPasswordCoDo;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.BmobExceptionUtil;
@@ -29,14 +29,14 @@ import cn.bmob.v3.exception.BmobException;
 public class ControlForgetPassword implements ViForgetPasswordCoDo,QueryUserDo{
 
     private Context mContext;
-    private ManageUser mManageUser;
+    private BmobManageUser mBmobManageUser;
     private final Handler mHandler;
     private BaseNiceDialog dialog;
 
 
     public ControlForgetPassword(Context context) {
         mContext = context;
-        mManageUser = new ManageUser(mContext);
+        mBmobManageUser = new BmobManageUser(mContext);
 
         mHandler = new Handler(){
             @Override
@@ -61,7 +61,7 @@ public class ControlForgetPassword implements ViForgetPasswordCoDo,QueryUserDo{
                         dialog = baseNiceDialog;
                         TextView textView = viewHolder.getView(R.id.nicedialog_loading_textView);
                         textView.setText("验证中...");
-                        mManageUser.query("username",phone,ControlForgetPassword.this);
+                        mBmobManageUser.query("username",phone,ControlForgetPassword.this);
                     }
                 });
     }

@@ -13,8 +13,8 @@ import com.othershe.nicedialog.BaseNiceDialog;
 import com.othershe.nicedialog.ViewHolder;
 import com.sayhellototheworld.littlewatermelon.shareplan.R;
 import com.sayhellototheworld.littlewatermelon.shareplan.customwidget.DialogLoading;
-import com.sayhellototheworld.littlewatermelon.shareplan.model.data_manage.bean.MyUserBean;
-import com.sayhellototheworld.littlewatermelon.shareplan.model.data_manage.data.ManageUser;
+import com.sayhellototheworld.littlewatermelon.shareplan.model.bmom.bean.MyUserBean;
+import com.sayhellototheworld.littlewatermelon.shareplan.model.bmom.data_manager.BmobManageUser;
 import com.sayhellototheworld.littlewatermelon.shareplan.model.local_file.MySharedPreferences;
 import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.userManage_interface.UserGetKeyCodeDo;
 import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.userManage_interface.UserRegisterDo;
@@ -36,7 +36,7 @@ public class ControlRegisterUser implements ViRegisterUserCoDo,UserGetKeyCodeDo,
     private Context mContext;
     private CountDownTimer timer = null;
     private Button keyCodeSend;
-    private ManageUser mManageUser;
+    private BmobManageUser mBmobManageUser;
     private BaseNiceDialog dialog;
 
     private String userPassword = "";
@@ -46,7 +46,7 @@ public class ControlRegisterUser implements ViRegisterUserCoDo,UserGetKeyCodeDo,
     public ControlRegisterUser(Context context, Button keyCodeSend) {
         mContext = context;
         this.keyCodeSend = keyCodeSend;
-        mManageUser = new ManageUser(mContext);
+        mBmobManageUser = new BmobManageUser(mContext);
 
         handler = new Handler(){
             @Override
@@ -81,11 +81,11 @@ public class ControlRegisterUser implements ViRegisterUserCoDo,UserGetKeyCodeDo,
             }
         };
         timer.start();
-        mManageUser.getKeyCode(phoneNum,this, ManageUser.SMS_TEMPLATE_REGISTER);
+        mBmobManageUser.getKeyCode(phoneNum,this, BmobManageUser.SMS_TEMPLATE_REGISTER);
     }
 
     @Override
-    public void registerSubmit(final MyUserBean userBean, final String keyCode,final String password) {
+    public void registerSubmit(final MyUserBean userBean, final String keyCode, final String password) {
         DialogLoading.showLoadingDialog(((FragmentActivity) mContext).getSupportFragmentManager(),
                 new DialogLoading.ShowLoadingDone() {
                     @Override
@@ -95,7 +95,7 @@ public class ControlRegisterUser implements ViRegisterUserCoDo,UserGetKeyCodeDo,
                         dialog = baseNiceDialog;
                         TextView textView = viewHolder.getView(R.id.nicedialog_loading_textView);
                         textView.setText("注册中...");
-                        mManageUser.registerCommit(userBean,keyCode,ControlRegisterUser.this);
+                        mBmobManageUser.registerCommit(userBean,keyCode,ControlRegisterUser.this);
                     }
                 });
     }

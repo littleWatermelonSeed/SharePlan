@@ -15,18 +15,22 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.othershe.nicedialog.BaseNiceDialog;
 import com.othershe.nicedialog.NiceDialog;
 import com.othershe.nicedialog.ViewConvertListener;
 import com.othershe.nicedialog.ViewHolder;
 import com.sayhellototheworld.littlewatermelon.shareplan.R;
-import com.sayhellototheworld.littlewatermelon.shareplan.model.data_manage.bean.MyUserBean;
+import com.sayhellototheworld.littlewatermelon.shareplan.model.bmom.bean.MyUserBean;
 import com.sayhellototheworld.littlewatermelon.shareplan.model.local_file.ManageFile;
 import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.base_interface.BaseActivityDo;
 import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.base_interface.ShowCurUserInfo;
 import com.sayhellototheworld.littlewatermelon.shareplan.presenter.centerplaza.ControlUserFragment;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.LayoutBackgroundUtil;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.PictureUtil;
+import com.sayhellototheworld.littlewatermelon.shareplan.util.pictureselect.activity.ShowPictureActivity;
 import com.sayhellototheworld.littlewatermelon.shareplan.view.user_view.LoginActivity;
 import com.sayhellototheworld.littlewatermelon.shareplan.view.user_view.PersonalInformationActivity;
 import com.sayhellototheworld.littlewatermelon.shareplan.view.user_view.RegisterUserActivity;
@@ -173,7 +177,7 @@ public class UserFragment extends Fragment implements BaseActivityDo, View.OnCli
                         editText3.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                useSysHeadPortrait();
+                                useSysHeadSkin();
                                 dialog.dismiss();
                             }
                         });
@@ -189,11 +193,11 @@ public class UserFragment extends Fragment implements BaseActivityDo, View.OnCli
     }
 
     private void choosePicture(){
-
+        ShowPictureActivity.startShowPictureActivityForResult(getActivity(), ShowPictureActivity.TARGET_BACKGROUND);
     }
 
-    private void useSysHeadPortrait(){
-
+    private void useSysHeadSkin(){
+        cuf.useSysHeadSkin();
     }
 
     @Override
@@ -207,6 +211,17 @@ public class UserFragment extends Fragment implements BaseActivityDo, View.OnCli
             textView_introductionContent.setVisibility(View.GONE);
             itemScrollView.setVisibility(View.GONE);
             registerAndLoginLayout.setVisibility(View.VISIBLE);
+            Glide.with(this)
+                    .load(R.drawable.user_background)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .dontAnimate()
+                    .into(new SimpleTarget<GlideDrawable>() {
+                        @Override
+                        public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                            parentLayout.setBackground(resource);
+                        }
+                    });
             login = false;
             return;
         }
@@ -251,6 +266,23 @@ public class UserFragment extends Fragment implements BaseActivityDo, View.OnCli
                     .error(R.drawable.head_log1)
                     .into(mCircleImageView);
         }
+
+        if (userBean.getSkin() == null || userBean.getSkin().getUrl() == null) {
+            LayoutBackgroundUtil.setLayoutBackground(getActivity(),parentLayout,R.drawable.user_background);
+        } else {
+            Glide.with(this)
+                    .load(ManageFile.getSelfBackground(PictureUtil.getPicNameFromUrl(userBean.getSkin().getUrl())))
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .dontAnimate()
+                    .error(R.drawable.user_background)
+                    .into(new SimpleTarget<GlideDrawable>() {
+                        @Override
+                        public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                            parentLayout.setBackground(resource);
+                        }
+                    });
+        }
         login = true;
     }
 
@@ -258,7 +290,7 @@ public class UserFragment extends Fragment implements BaseActivityDo, View.OnCli
         login = l;
     }
 
-    public static boolean getLogin() {
+    public static boolean getLoginStatue() {
         return login;
     }
 

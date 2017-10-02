@@ -1,4 +1,4 @@
-package com.sayhellototheworld.littlewatermelon.shareplan.model.data_manage.bean;
+package com.sayhellototheworld.littlewatermelon.shareplan.model.bmom.bean;
 
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;

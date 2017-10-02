@@ -2,9 +2,6 @@ package com.sayhellototheworld.littlewatermelon.shareplan.model.local_file;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.PixelFormat;
-import android.graphics.drawable.Drawable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -12,6 +9,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.sayhellototheworld.littlewatermelon.shareplan.SPApplication;
+import com.sayhellototheworld.littlewatermelon.shareplan.util.PictureUtil;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.SysUtil;
 
 import java.io.File;
@@ -19,6 +17,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
@@ -62,6 +61,39 @@ public class ManageFile {
             return null;
         }
         return file;
+    }
+
+    public static String copyImageToPlan(String imagePath,String imageName){
+        String targetPath = null;
+        File image = new File(imagePath);
+        if (!image.exists()){
+            return targetPath;
+        }
+
+        File targetImage = new File(GetFile.getExternalPlanImageFile(),imageName + ".png");
+        if (targetImage.exists()){
+            targetImage.delete();
+        }
+
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+        byte[] buffer = new byte[1024];
+        int index = 0;
+        try {
+            targetImage.createNewFile();
+            inputStream = new FileInputStream(image);
+            outputStream = new FileOutputStream(targetImage);
+            while ((index = inputStream.read(buffer)) != -1){
+                outputStream.write(buffer,0,index);
+            }
+            targetPath = targetImage.getAbsolutePath();
+            outputStream.close();
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return targetPath;
     }
 
     private static void saveImage(File headPic, File headPortrait) {
@@ -129,7 +161,7 @@ public class ManageFile {
                     @Override
                     public boolean onResourceReady(GlideDrawable resource, Integer model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                         if (resource != null) {
-                            Bitmap bitmap = drawableToBitmap(resource);
+                            Bitmap bitmap = PictureUtil.drawableToBitmap(resource);
                             OutputStream outputStream = null;
                             try {
                                 outputStream = new FileOutputStream(saveFile);
@@ -147,24 +179,6 @@ public class ManageFile {
                 })
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(SysUtil.getDisplayWidth(),SysUtil.getDisplayHeight());
-    }
-
-    public static Bitmap drawableToBitmap(Drawable drawable) {
-        // 取 drawable 的长宽
-        int w = drawable.getIntrinsicWidth();
-        int h = drawable.getIntrinsicHeight();
-
-        // 取 drawable 的颜色格式
-        Bitmap.Config config = drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
-                : Bitmap.Config.RGB_565;
-        // 建立对应 bitmap
-        Bitmap bitmap = Bitmap.createBitmap(w, h, config);
-        // 建立对应 bitmap 的画布
-        Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0, 0, w, h);
-        // 把 drawable 内容画到画布中
-        drawable.draw(canvas);
-        return bitmap;
     }
 
 }

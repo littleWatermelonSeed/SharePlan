@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.sayhellototheworld.littlewatermelon.shareplan.R;
-import com.sayhellototheworld.littlewatermelon.shareplan.model.data_manage.bean.MyUserBean;
+import com.sayhellototheworld.littlewatermelon.shareplan.model.bmom.bean.MyUserBean;
 import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.base_interface.BaseActivityDo;
 import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.userManage_interface.ViRegisterUserCoDo;
 import com.sayhellototheworld.littlewatermelon.shareplan.presenter.user_manage.ControlRegisterUser;

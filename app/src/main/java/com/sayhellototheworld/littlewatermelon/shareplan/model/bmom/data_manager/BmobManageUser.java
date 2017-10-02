@@ -1,15 +1,16 @@
-package com.sayhellototheworld.littlewatermelon.shareplan.model.data_manage.data;
+package com.sayhellototheworld.littlewatermelon.shareplan.model.bmom.data_manager;
 
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
-import com.sayhellototheworld.littlewatermelon.shareplan.model.data_manage.bean.MyUserBean;
-import com.sayhellototheworld.littlewatermelon.shareplan.model.data_manage.real_data.RealTimeData;
+import com.sayhellototheworld.littlewatermelon.shareplan.model.bmom.bean.MyUserBean;
+import com.sayhellototheworld.littlewatermelon.shareplan.model.bmom.real_data.RealTimeData;
 import com.sayhellototheworld.littlewatermelon.shareplan.model.local_file.GetFile;
 import com.sayhellototheworld.littlewatermelon.shareplan.model.local_file.ManageFile;
 import com.sayhellototheworld.littlewatermelon.shareplan.model.local_file.MySharedPreferences;
 import com.sayhellototheworld.littlewatermelon.shareplan.model.thread_manager.JoinToThreadPool;
+import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.userManage_interface.DeleteFileDo;
 import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.userManage_interface.DownLoadFileDo;
 import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.userManage_interface.QueryUserDo;
 import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.userManage_interface.ResetPasswordBySmsDo;
@@ -41,23 +42,23 @@ import cn.bmob.v3.listener.UploadFileListener;
  * Created by 123 on 2017/9/6.
  */
 
-public class ManageUser {
+public class BmobManageUser {
 
     private Context mContext;
     private Runnable mRunnable;
     private RealTimeData mRealTimeData;
     private MySharedPreferences mPreferences;
 
-    public final static String SMS_TEMPLATE_REGISTER = "changePS";
+    public final static String SMS_TEMPLATE_REGISTER = "register";
     public final static String SMS_TEMPLATE_CHANGEPASSWORD = "changePS";
 
-    public ManageUser(Context context) {
+    public BmobManageUser(Context context) {
         mContext = context;
         mPreferences = MySharedPreferences.getInstance();
         mRealTimeData = RealTimeData.getInstance();
     }
 
-    public ManageUser() {
+    public BmobManageUser() {
 
     }
 
@@ -81,10 +82,20 @@ public class ManageUser {
         JoinToThreadPool.joinToCache(mRunnable);
     }
 
+    public void asynUpdateUserSkin(final BmobFile headPicFile, final UserUpdateDo done) {
+        mRunnable = new Runnable() {
+            @Override
+            public void run() {
+                updateUserSkin( headPicFile, done);
+            }
+        };
+        JoinToThreadPool.joinToCache(mRunnable);
+    }
+
     public void updateWhitHeadPic(final MyUserBean userBean, final BmobFile headPicFile, final UserUpdateDo done) {
-        if (userBean.getHeadPortrait() != null && userBean.getHeadPortrait().getUrl() != null) {
+        if (getCurrentUser().getHeadPortrait() != null && getCurrentUser().getHeadPortrait().getUrl() != null) {
             BmobFile bmobFile = new BmobFile();
-            bmobFile.setUrl(userBean.getHeadPortrait().getUrl());
+            bmobFile.setUrl(getCurrentUser().getHeadPortrait().getUrl());
             bmobFile.delete();
         }
         headPicFile.uploadblock(new UploadFileListener() {
@@ -101,6 +112,46 @@ public class ManageUser {
                                     if (e == null) {
                                         ManageFile.saveHeadPortrait(userBean.getHeadPortrait().getLocalFile(),
                                                 PictureUtil.getPicNameFromUrl(userBean.getHeadPortrait().getUrl()));
+                                        done.updateSuccess();
+                                    } else {
+                                        done.updateFail(e);
+                                    }
+                                }
+                            });
+                        } else {
+                            done.updateFail(e);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    public void updateUserSkin(final BmobFile skin, final UserUpdateDo done) {
+        if (getCurrentUser().getSkin() != null && getCurrentUser().getSkin().getUrl() != null) {
+            BmobFile bmobFile = new BmobFile();
+            bmobFile.setUrl(getCurrentUser().getSkin().getUrl());
+            bmobFile.delete();
+            File file = ManageFile.getSelfBackground(PictureUtil.getPicNameFromUrl(getCurrentUser().getSkin().getUrl()));
+            if (file.exists()){
+                file.delete();
+            }
+        }
+        skin.uploadblock(new UploadFileListener() {
+            @Override
+            public void done(final BmobException e) {
+                ((Activity) mContext).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (e == null) {
+                            final MyUserBean userBean = new MyUserBean();
+                            userBean.setSkin(skin);
+                            userBean.update(getCurrentUser().getObjectId(), new UpdateListener() {
+                                @Override
+                                public void done(BmobException e) {
+                                    if (e == null) {
+                                        ManageFile.saveSelfBackground(userBean.getSkin().getLocalFile(),
+                                                PictureUtil.getPicNameFromUrl(userBean.getSkin().getUrl()));
                                         done.updateSuccess();
                                     } else {
                                         done.updateFail(e);
@@ -133,6 +184,36 @@ public class ManageUser {
                 });
             }
         });
+    }
+
+    public void deleteFile(final BmobFile bmobFile,final DeleteFileDo done){
+        final File file = ManageFile.getSelfBackground(PictureUtil.getPicNameFromUrl(bmobFile.getUrl()));
+
+        bmobFile.delete(new UpdateListener() {
+            @Override
+            public void done(final BmobException e) {
+                ((Activity) mContext).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (e == null) {
+                            if (file.exists()){
+                                boolean b = file.delete();
+                                if (b){
+                                    Log.i("niyuanjie","删除成功");
+                                }else {
+                                    Log.i("niyuanjie","删除失败");
+                                }
+
+                            }
+                            done.deleteSuccess();
+                        } else {
+                            done.deleteFail(e);
+                        }
+                    }
+                });
+            }
+        });
+
     }
 
     public void query(String columnName, String values, final QueryUserDo done) {

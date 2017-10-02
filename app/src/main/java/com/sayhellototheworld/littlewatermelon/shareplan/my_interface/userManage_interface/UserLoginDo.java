@@ -1,6 +1,6 @@
 package com.sayhellototheworld.littlewatermelon.shareplan.my_interface.userManage_interface;
 
-import com.sayhellototheworld.littlewatermelon.shareplan.model.data_manage.bean.MyUserBean;
+import com.sayhellototheworld.littlewatermelon.shareplan.model.bmom.bean.MyUserBean;
 
 import cn.bmob.v3.exception.BmobException;
 

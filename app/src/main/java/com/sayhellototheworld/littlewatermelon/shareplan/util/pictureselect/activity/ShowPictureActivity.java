@@ -99,7 +99,7 @@ public class ShowPictureActivity extends BaseNoStatusActivity {
             adapter = new GridAdapter(this,textView_choose,0,GridAdapter.STYLE_HEADPORTRAIT,1);
             bottomLayout.setVisibility(View.GONE);
         }else if (target == TARGET_PLAN){
-            adapter = new GridAdapter(this,textView_choose,0,GridAdapter.STYLE_PLAN);
+            adapter = new GridAdapter(this,textView_choose,0,GridAdapter.STYLE_PLAN,5);
         }else if (target == TARGET_BACKGROUND){
             adapter = new GridAdapter(this,textView_choose,0,GridAdapter.STYLE_BACKGROUND,1);
             bottomLayout.setVisibility(View.GONE);
@@ -185,13 +185,7 @@ public class ShowPictureActivity extends BaseNoStatusActivity {
     }
 
     private void doCancle() {
-
         clearPictureDataManager();
-
-        Intent intent = new Intent();
-        intent.putExtra(RESULT_STATE_KEY,RESULT_STATE_NO);
-        setResult(RESULT_OK,intent);
-
         finish();
     }
 
@@ -212,7 +206,6 @@ public class ShowPictureActivity extends BaseNoStatusActivity {
         }
 
         Intent intent = new Intent();
-        intent.putExtra(RESULT_STATE_KEY,RESULT_STATE_OK);
         intent.putExtra(RESULT_DATA_KEY, (Serializable) reslut);
         setResult(RESULT_OK,intent);
         clearPictureDataManager();

@@ -21,7 +21,7 @@ import com.othershe.nicedialog.ViewHolder;
 import com.sayhellototheworld.littlewatermelon.shareplan.R;
 import com.sayhellototheworld.littlewatermelon.shareplan.customwidget.DialogConfirm;
 import com.sayhellototheworld.littlewatermelon.shareplan.customwidget.LiTopBar;
-import com.sayhellototheworld.littlewatermelon.shareplan.model.data_manage.bean.MyUserBean;
+import com.sayhellototheworld.littlewatermelon.shareplan.model.bmom.bean.MyUserBean;
 import com.sayhellototheworld.littlewatermelon.shareplan.model.local_file.GetFile;
 import com.sayhellototheworld.littlewatermelon.shareplan.model.local_file.ManageFile;
 import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.base_interface.BaseActivityDo;

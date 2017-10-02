@@ -7,8 +7,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.sayhellototheworld.littlewatermelon.shareplan.model.data_manage.bean.MyUserBean;
-import com.sayhellototheworld.littlewatermelon.shareplan.model.data_manage.data.ManageUser;
+import com.sayhellototheworld.littlewatermelon.shareplan.model.bmom.bean.MyUserBean;
+import com.sayhellototheworld.littlewatermelon.shareplan.model.bmom.data_manager.BmobManageUser;
 import com.sayhellototheworld.littlewatermelon.shareplan.model.local_file.MySharedPreferences;
 import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.EnterDo;
 import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.base_interface.BaseActivityDo;
@@ -24,7 +24,7 @@ public class EnterActivity extends BaseStatusActivity implements BaseActivityDo,
 
     private Button button;
     private Button button_test;
-    private ManageUser mManageUser = new ManageUser(this);
+    private BmobManageUser mBmobManageUser = new BmobManageUser(this);
 
     private boolean login = false;
 
@@ -52,7 +52,7 @@ public class EnterActivity extends BaseStatusActivity implements BaseActivityDo,
                 startActivity(new Intent(EnterActivity.this, TestActivity.class));
             }
         });
-        if (mManageUser.getCurrentUser() == null) {
+        if (mBmobManageUser.getCurrentUser() == null) {
             button.setClickable(true);
             login = false;
         } else {
@@ -84,7 +84,7 @@ public class EnterActivity extends BaseStatusActivity implements BaseActivityDo,
             Log.i("niyuanjie","没有网啦");
             return;
         }
-        mManageUser.loginAndSyncUser(MySharedPreferences.getInstance().getStringMessage(MySharedPreferences.KEY_USER_ID),
+        mBmobManageUser.loginAndSyncUser(MySharedPreferences.getInstance().getStringMessage(MySharedPreferences.KEY_USER_ID),
                 MySharedPreferences.getInstance().getStringMessage(MySharedPreferences.KEY_USER_PASSWORD),
                 new UserLoginDo() {
                     @Override

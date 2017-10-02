@@ -12,7 +12,7 @@ import com.othershe.nicedialog.BaseNiceDialog;
 import com.othershe.nicedialog.ViewHolder;
 import com.sayhellototheworld.littlewatermelon.shareplan.R;
 import com.sayhellototheworld.littlewatermelon.shareplan.customwidget.DialogLoading;
-import com.sayhellototheworld.littlewatermelon.shareplan.model.data_manage.data.ManageUser;
+import com.sayhellototheworld.littlewatermelon.shareplan.model.bmom.data_manager.BmobManageUser;
 import com.sayhellototheworld.littlewatermelon.shareplan.model.local_file.MySharedPreferences;
 import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.userManage_interface.ResetPasswordBySmsDo;
 import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.userManage_interface.UserGetKeyCodeDo;
@@ -37,7 +37,7 @@ public class ControlForgetPasswordNext implements UserGetKeyCodeDo,ViForgetPassw
     private String newPS;
 
     private CountDownTimer timer;
-    private ManageUser mManageUser;
+    private BmobManageUser mBmobManageUser;
     private final Handler mHandler;
     private BaseNiceDialog dialog;
 
@@ -45,7 +45,7 @@ public class ControlForgetPasswordNext implements UserGetKeyCodeDo,ViForgetPassw
         mContext = context;
         this.keyCodeSend = keyCodeSend;
         this.phoneNum = phoneNum;
-        mManageUser = new ManageUser(mContext);
+        mBmobManageUser = new BmobManageUser(mContext);
 
         mHandler = new Handler(){
             @Override
@@ -78,7 +78,7 @@ public class ControlForgetPasswordNext implements UserGetKeyCodeDo,ViForgetPassw
             }
         };
         timer.start();
-        mManageUser.getKeyCode(phoneNum,this, ManageUser.SMS_TEMPLATE_CHANGEPASSWORD);
+        mBmobManageUser.getKeyCode(phoneNum,this, BmobManageUser.SMS_TEMPLATE_CHANGEPASSWORD);
     }
 
     @Override
@@ -91,7 +91,7 @@ public class ControlForgetPasswordNext implements UserGetKeyCodeDo,ViForgetPassw
                         dialog = baseNiceDialog;
                         TextView textView = viewHolder.getView(R.id.nicedialog_loading_textView);
                         textView.setText("修改中...");
-                        mManageUser.resetPasswordBySMSCode(smsCode,newPassword,ControlForgetPasswordNext.this);
+                        mBmobManageUser.resetPasswordBySMSCode(smsCode,newPassword,ControlForgetPasswordNext.this);
                     }
                 });
     }

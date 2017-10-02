@@ -3,7 +3,10 @@ package com.sayhellototheworld.littlewatermelon.shareplan;
 import android.app.Application;
 import android.content.Context;
 
+import com.sayhellototheworld.littlewatermelon.shareplan.model.local_file.MySharedPreferences;
+
 import org.litepal.LitePal;
+import org.litepal.tablemanager.Connector;
 
 import cn.bmob.v3.Bmob;
 
@@ -38,6 +41,11 @@ public class SPApplication extends Application {
 
     private void initLitepal(){
         LitePal.initialize(this);
+        if (!MySharedPreferences.getInstance().getBooleanMessage(MySharedPreferences.KEY_FIRST_LOGIN)){
+            Connector.getDatabase();
+            MySharedPreferences.getInstance().saveMessage(MySharedPreferences.KEY_FIRST_LOGIN,true);
+        }
+        Connector.getDatabase();
     }
 
     public static Context getAppContext(){
