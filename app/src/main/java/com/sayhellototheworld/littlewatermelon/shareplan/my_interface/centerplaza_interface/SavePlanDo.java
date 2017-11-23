@@ -14,5 +14,5 @@ public interface SavePlanDo {
 
     void saveSuccess(PlanBean planBean, List<String> imageUrls);
     void saveFail(BmobException e);
-
+    void saveImageFail(String s);
 }

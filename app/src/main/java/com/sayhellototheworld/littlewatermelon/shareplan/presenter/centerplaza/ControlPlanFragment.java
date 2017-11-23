@@ -3,6 +3,7 @@ package com.sayhellototheworld.littlewatermelon.shareplan.presenter.centerplaza;
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -16,7 +17,9 @@ import com.sayhellototheworld.littlewatermelon.shareplan.model.localDB.table.Tab
 import com.sayhellototheworld.littlewatermelon.shareplan.util.BmobExceptionUtil;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.MyToastUtil;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.NetWorkUtil;
+import com.sayhellototheworld.littlewatermelon.shareplan.util.TimeFormatUtil;
 import com.sayhellototheworld.littlewatermelon.shareplan.view.centerplaza_view.centerplaza_fragment.PlanFragment;
+import com.sayhellototheworld.littlewatermelon.shareplan.view.function_view.PlanDetailsActivity;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
@@ -35,7 +38,7 @@ import cn.bmob.v3.listener.QueryListener;
  * Created by 123 on 2017/9/25.
  */
 
-public class ControlPlanFragment implements OnLoadmoreListener, OnRefreshListener {
+public class ControlPlanFragment implements OnLoadmoreListener, OnRefreshListener,AdapterView.OnItemClickListener{
 
     private Context mContext;
     private ListView listView;
@@ -78,6 +81,7 @@ public class ControlPlanFragment implements OnLoadmoreListener, OnRefreshListene
 
         mAdapter = new PlanListAdapter(mContext, showTablePlanList);
         listView.setAdapter(mAdapter);
+        listView.setOnItemClickListener(this);
     }
 
     public void syncPlan() {
@@ -246,13 +250,14 @@ public class ControlPlanFragment implements OnLoadmoreListener, OnRefreshListene
     private TablePlan bmobToLocalPlan(PlanBean p) {
         TablePlan tablePlan = new TablePlan();
         tablePlan.setObjectID(p.getObjectId());
-        tablePlan.setBeginTime(p.getBeginTime());
+        tablePlan.setBeginTime(TimeFormatUtil.bmobDateToDate(p.getBeginTime().getDate()));
         tablePlan.setContent(p.getContent());
-        tablePlan.setCreateTime(p.getCreateTime());
-        tablePlan.setEndTime(p.getEndTime());
+        tablePlan.setCreateTime(TimeFormatUtil.bmobDateToDate(p.getCreatedAt()));
+        tablePlan.setEndTime(TimeFormatUtil.bmobDateToDate(p.getEndTime().getDate()));
         tablePlan.setLimit(p.getLimit());
         tablePlan.setStatue(p.getStatue());
         tablePlan.setTitle(p.getTitle());
+        tablePlan.setLikes(p.getStars());
         tablePlan.setUserID(BmobManageUser.getCurrentUser().getUsername());
         return tablePlan;
     }
@@ -266,4 +271,8 @@ public class ControlPlanFragment implements OnLoadmoreListener, OnRefreshListene
         return true;
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        PlanDetailsActivity.startPlanDetailsActivity(mContext,showTablePlanList.get(position).getObjectID());
+    }
 }

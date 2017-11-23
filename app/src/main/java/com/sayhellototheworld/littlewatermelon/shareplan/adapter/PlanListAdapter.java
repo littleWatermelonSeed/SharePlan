@@ -78,7 +78,7 @@ public class PlanListAdapter extends BaseAdapter{
             viewHolder.textView_statue.setTextColor(mContext.getResources().getColor(R.color.plan_text_statue_finished));
         }
         listener = new ContentClick(position);
-        viewHolder.textView_content.setOnClickListener(listener);
+//        viewHolder.textView_content.setOnClickListener(listener);
         return convertView;
     }
 

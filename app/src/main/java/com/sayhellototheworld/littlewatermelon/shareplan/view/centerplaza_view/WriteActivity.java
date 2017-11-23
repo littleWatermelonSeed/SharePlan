@@ -15,7 +15,6 @@ import com.sayhellototheworld.littlewatermelon.shareplan.adapter.PlanImageAdapte
 import com.sayhellototheworld.littlewatermelon.shareplan.customwidget.DialogConfirm;
 import com.sayhellototheworld.littlewatermelon.shareplan.customwidget.LiTopBar;
 import com.sayhellototheworld.littlewatermelon.shareplan.model.bmom.bean.PlanBean;
-import com.sayhellototheworld.littlewatermelon.shareplan.model.localDB.table.TablePlan;
 import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.base_interface.BaseActivityDo;
 import com.sayhellototheworld.littlewatermelon.shareplan.presenter.centerplaza.ControlWrite;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.MyToastUtil;
@@ -27,6 +26,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import cn.bmob.v3.datatype.BmobDate;
 
 public class WriteActivity extends BaseStatusActivity implements View.OnClickListener,BaseActivityDo{
 
@@ -42,7 +43,6 @@ public class WriteActivity extends BaseStatusActivity implements View.OnClickLis
     private List<String> imagePath;
     private PlanImageAdapter mPlanImageAdapter;
     private ControlWrite mControlWrite;
-    private TablePlan mTablePlan;
     private PlanBean mPlanBean;
 
     private String title = "";
@@ -127,18 +127,17 @@ public class WriteActivity extends BaseStatusActivity implements View.OnClickLis
         }
         mPlanBean.setTitle(title);
         mPlanBean.setContent(content);
-        mPlanBean.setBeginTime(stratTime);
-        mPlanBean.setEndTime(endTime);
+        mPlanBean.setBeginTime(new BmobDate(stratTime));
+        mPlanBean.setEndTime(new BmobDate(endTime));
         mPlanBean.setLimit(permission);
         mPlanBean.setStatue(0);
-        mPlanBean.setCreateTime(new Date());
+        mPlanBean.setStars(0);
         return true;
     }
 
     @Override
     public void initParam() {
         imagePath = new ArrayList<>();
-        mTablePlan = new TablePlan();
         mPlanBean = new PlanBean();
         mControlWrite = new ControlWrite(this);
         mPlanImageAdapter = new PlanImageAdapter(this,imagePath,PlanImageAdapter.TYPE_WRITE_PLAN);
@@ -243,7 +242,5 @@ public class WriteActivity extends BaseStatusActivity implements View.OnClickLis
             }
         }
     }
-
-
 
 }

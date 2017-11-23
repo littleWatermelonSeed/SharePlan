@@ -37,27 +37,27 @@ public class EnterActivity extends BaseStatusActivity implements BaseActivityDo,
 
     @Override
     public void init() {
-        button = (Button) findViewById(R.id.test);
-        button.setClickable(false);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(EnterActivity.this, CenterPlazaActivity.class));
-            }
-        });
-        button_test = (Button) findViewById(R.id.test1);
-        button_test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(EnterActivity.this, TestActivity.class));
-            }
-        });
-        if (mBmobManageUser.getCurrentUser() == null) {
-            button.setClickable(true);
-            login = false;
-        } else {
-            login = true;
-        }
+//        button = (Button) findViewById(R.id.test);
+//        button.setClickable(false);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(EnterActivity.this, CenterPlazaActivity.class));
+//            }
+//        });
+//        button_test = (Button) findViewById(R.id.test1);
+//        button_test.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(EnterActivity.this, TestActivity.class));
+//            }
+//        });
+//        if (mBmobManageUser.getCurrentUser() == null) {
+//            button.setClickable(true);
+//            login = false;
+//        } else {
+//            login = true;
+//        }
         initUser();
     }
 
@@ -89,13 +89,17 @@ public class EnterActivity extends BaseStatusActivity implements BaseActivityDo,
                 new UserLoginDo() {
                     @Override
                     public void loginSuccess(MyUserBean myUserBean) {
+                        startActivity(new Intent(EnterActivity.this, CenterPlazaActivity.class));
+                        finish();
                         Log.i("niyuanjie","登录成功");
                     }
 
                     @Override
                     public void loginFail(BmobException ex) {
                         Log.i("niyuanjie","登录失败");
+                        startActivity(new Intent(EnterActivity.this, CenterPlazaActivity.class));
                         BmobExceptionUtil.dealWithException(EnterActivity.this,ex);
+                        finish();
                     }
                 });
 

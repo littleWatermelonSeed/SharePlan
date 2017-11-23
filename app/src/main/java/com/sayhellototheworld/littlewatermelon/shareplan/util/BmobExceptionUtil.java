@@ -68,7 +68,7 @@ public class BmobExceptionUtil {
                 MyToastUtil.showToast("未知错误：" + e.getErrorCode() + " " + e.getMessage(),MyToastUtil.LONG);
                 break;
         }
-        Log.i("niyuanjieEx","错误代码：" + "  " + e.getErrorCode() + "  错误信息：" + e.getMessage());
+        Log.i("niyuanjieEx","错误代码：" + e.getErrorCode() + "  错误信息：" + e.getMessage());
     }
 
     public static void dealWithException(Context mContext,BmobException e,String logMessage){
@@ -124,7 +124,7 @@ public class BmobExceptionUtil {
                 MyToastUtil.showToast("未知错误：" + e.getErrorCode() + " " + e.getMessage(),MyToastUtil.LONG);
                 break;
         }
-        Log.i("niyuanjieEx","位置：" + logMessage + "  错误代码：" + "  " + e.getErrorCode() + "  错误信息：" + e.getMessage());
+        Log.i("niyuanjieEx","位置：" + logMessage + "  错误代码：" + e.getErrorCode() + "  错误信息：" + e.getMessage());
     }
 
 }

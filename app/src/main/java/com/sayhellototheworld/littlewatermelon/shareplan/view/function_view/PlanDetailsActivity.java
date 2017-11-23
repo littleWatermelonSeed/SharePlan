@@ -20,7 +20,7 @@ import com.sayhellototheworld.littlewatermelon.shareplan.model.bmom.data_manager
 import com.sayhellototheworld.littlewatermelon.shareplan.model.localDB.table.TablePlan;
 import com.sayhellototheworld.littlewatermelon.shareplan.model.local_file.ManageFile;
 import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.base_interface.BaseActivityDo;
-import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.function_interface.PlanDetailsInitShow;
+import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.function_interface.PlanDetailsInitDo;
 import com.sayhellototheworld.littlewatermelon.shareplan.presenter.function.ControlPlanDetails;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.PictureUtil;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.TimeFormatUtil;
@@ -33,7 +33,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class PlanDetailsActivity extends BaseSlideBcakStatusActivity implements BaseActivityDo,View.OnClickListener,PlanDetailsInitShow{
+public class PlanDetailsActivity extends BaseSlideBcakStatusActivity implements BaseActivityDo,View.OnClickListener,PlanDetailsInitDo {
 
     private LinearLayout detailsBack;
     private TextView detailsBackText;
@@ -54,8 +54,10 @@ public class PlanDetailsActivity extends BaseSlideBcakStatusActivity implements 
     private SmartRefreshLayout refreshLayout;
 
     private String objectID;
+    private String planTitle;
     private List<String> imageUrls;
     private PlanImageAdapter mAdapter;
+    private int planStatus;
 
     private ControlPlanDetails cpd;
 
@@ -90,6 +92,7 @@ public class PlanDetailsActivity extends BaseSlideBcakStatusActivity implements 
         detailsImage = (MyGridView) findViewById(R.id.activity_plan_details_image);
         detailsStatue = (TextView) findViewById(R.id.activity_plan_details_statue);
         detailsProgress = (RelativeLayout) findViewById(R.id.activity_plan_details_progress);
+        detailsProgress.setOnClickListener(this);
         detailsComment = (TextView) findViewById(R.id.activity_plan_details_comment);
         detailsLikes = (TextView) findViewById(R.id.activity_plan_details_likes);
         detailsCommentList = (MyListView) findViewById(R.id.activity_plan_details_comment_list);
@@ -130,6 +133,7 @@ public class PlanDetailsActivity extends BaseSlideBcakStatusActivity implements 
             case R.id.activity_plan_details_more:
                 break;
             case R.id.activity_plan_details_progress:
+                PlanProgressActivity.startPlanProgressActivity(this,objectID,planTitle,planStatus);
                 break;
         }
     }
@@ -143,6 +147,7 @@ public class PlanDetailsActivity extends BaseSlideBcakStatusActivity implements 
             detailsLimitIcon.setImageResource(R.drawable.limit_close);
             detailsLimit.setText("仅自己可见");
         }
+        planTitle = tablePlan.getTitle();
         detailsTitle.setText(tablePlan.getTitle());
         detailsName.setText(BmobManageUser.getCurrentUser().getNickName());
         detailsCreateTime.setText(TimeFormatUtil.DateToRealTime(tablePlan.getCreateTime()));
@@ -150,12 +155,15 @@ public class PlanDetailsActivity extends BaseSlideBcakStatusActivity implements 
         if (tablePlan.getStatue() != 1 && !TimeFormatUtil.compareDate(tablePlan.getEndTime(), new Date())) {
             detailsStatue.setText("未完成");
             detailsStatue.setTextColor(getResources().getColor(R.color.plan_text_statue_unfinished));
+            planStatus = -1;
         } else if (tablePlan.getStatue() == 0) {
             detailsStatue.setText("进行中");
             detailsStatue.setTextColor(getResources().getColor(R.color.plan_text_statue_ing));
+            planStatus = 0;
         } else if (tablePlan.getStatue() == 1) {
             detailsStatue.setText("已完成");
             detailsStatue.setTextColor(getResources().getColor(R.color.plan_text_statue_finished));
+            planStatus = 1;
         }
         MyUserBean userBean = BmobManageUser.getCurrentUser();
         if (userBean.getHeadPortrait() == null || userBean.getHeadPortrait().getUrl() == null) {
@@ -174,6 +182,7 @@ public class PlanDetailsActivity extends BaseSlideBcakStatusActivity implements 
                     .error(R.drawable.head_log1)
                     .into(detailsHeadPortrait);
         }
+        detailsLikes.setText(tablePlan.getLikes() + "");
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.sayhellototheworld.littlewatermelon.shareplan.util;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -8,6 +10,17 @@ import java.util.Date;
  */
 
 public class TimeFormatUtil {
+
+    public static Date bmobDateToDate(String bmobDate){
+        SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
+        Date date = null;
+        try {
+            date = sdf.parse(bmobDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
 
     public static String DateToStringTime(Date date){
         String time;

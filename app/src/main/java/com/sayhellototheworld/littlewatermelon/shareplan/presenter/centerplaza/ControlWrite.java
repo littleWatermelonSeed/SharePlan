@@ -23,6 +23,7 @@ import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.centerplaz
 import com.sayhellototheworld.littlewatermelon.shareplan.util.BmobExceptionUtil;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.MyToastUtil;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.PictureUtil;
+import com.sayhellototheworld.littlewatermelon.shareplan.util.TimeFormatUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,11 +91,12 @@ public class ControlWrite implements SavePlanDo {
         tablePlan.setUserID(BmobManageUser.getCurrentUser().getUsername());
         tablePlan.setTitle(planBean.getTitle());
         tablePlan.setContent(planBean.getContent());
-        tablePlan.setBeginTime(planBean.getBeginTime());
-        tablePlan.setEndTime(planBean.getEndTime());
+        tablePlan.setBeginTime(TimeFormatUtil.bmobDateToDate(planBean.getBeginTime().getDate()));
+        tablePlan.setEndTime(TimeFormatUtil.bmobDateToDate(planBean.getEndTime().getDate()));
         tablePlan.setLimit(planBean.getLimit());
         tablePlan.setStatue(planBean.getStatue());
-        tablePlan.setCreateTime(planBean.getCreateTime());
+        tablePlan.setCreateTime(TimeFormatUtil.bmobDateToDate(planBean.getCreatedAt()));
+        tablePlan.setLikes(planBean.getStars());
         saveLocalPlan(tablePlan,imageUrls);
     }
 
@@ -102,6 +104,12 @@ public class ControlWrite implements SavePlanDo {
     public void saveFail(BmobException e) {
         DialogLoading.dismissLoadingDialog(handler, dialog, "", DialogLoading.MSG_FAIL);
         BmobExceptionUtil.dealWithException(mContext, e);
+    }
+
+    @Override
+    public void saveImageFail(String s) {
+        DialogLoading.dismissLoadingDialog(handler, dialog, "", DialogLoading.MSG_FAIL);
+        MyToastUtil.showToast(s);
     }
 
     public void saveLocalPlan(final TablePlan tablePlan,final List<String> imageUrls) {

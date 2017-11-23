@@ -14,8 +14,10 @@ import com.bumptech.glide.Glide;
 import com.sayhellototheworld.littlewatermelon.shareplan.R;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.pictureselect.activity.ClipHeadPortraitActivity;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.pictureselect.activity.PreviewBackgroundActivity;
+import com.sayhellototheworld.littlewatermelon.shareplan.util.pictureselect.activity.PreviewPlanPicActivity;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -183,7 +185,7 @@ public class GridAdapter extends BaseAdapter{
                     toBackgroundDo(position);
                     break;
                 case STYLE_PLAN:
-                    toPlanDo();
+                    toPlanDo(position);
                     break;
             }
         }
@@ -210,6 +212,12 @@ public class GridAdapter extends BaseAdapter{
         PreviewBackgroundActivity.startActivity(context,images.get(position).getPath());
     }
 
-    private void toPlanDo(){}
+    private void toPlanDo(int position){
+        List<String> imageUrls = new ArrayList<>();
+        for (Image i:images){
+            imageUrls.add(i.getPath());
+        }
+        PreviewPlanPicActivity.startPreviewPlanPicActivity(context,imageUrls,position);
+    }
 
 }

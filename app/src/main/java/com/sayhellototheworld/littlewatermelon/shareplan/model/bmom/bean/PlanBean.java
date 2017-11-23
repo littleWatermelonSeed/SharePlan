@@ -1,9 +1,9 @@
 package com.sayhellototheworld.littlewatermelon.shareplan.model.bmom.bean;
 
-import java.util.Date;
 import java.util.List;
 
 import cn.bmob.v3.BmobObject;
+import cn.bmob.v3.datatype.BmobDate;
 
 /**
  * Created by 123 on 2017/9/23.
@@ -15,22 +15,13 @@ public class PlanBean extends BmobObject{
     private String userID;
     private String title;
     private String content;
-    private Date beginTime;
-    private Date endTime;
-    private Date createTime;
+    private BmobDate beginTime;
+    private BmobDate endTime;
     private Boolean limit;
     private String location;
     private Integer stars;
     private Integer statue;
     private List<String> imageUrls;
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
 
     public Integer getStatue() {
         return statue;
@@ -72,19 +63,19 @@ public class PlanBean extends BmobObject{
         this.content = content;
     }
 
-    public Date getBeginTime() {
+    public BmobDate getBeginTime() {
         return beginTime;
     }
 
-    public void setBeginTime(Date beginTime) {
+    public void setBeginTime(BmobDate beginTime) {
         this.beginTime = beginTime;
     }
 
-    public Date getEndTime() {
+    public BmobDate getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(BmobDate endTime) {
         this.endTime = endTime;
     }
 

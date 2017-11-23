@@ -50,6 +50,4 @@
             app:layout_srlBackgroundColor="@color/gray"/>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
-
-
 </LinearLayout>

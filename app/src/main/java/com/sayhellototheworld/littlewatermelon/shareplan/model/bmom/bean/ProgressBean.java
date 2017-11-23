@@ -1,16 +1,16 @@
 package com.sayhellototheworld.littlewatermelon.shareplan.model.bmom.bean;
 
-import java.util.Date;
 import java.util.List;
+
+import cn.bmob.v3.BmobObject;
 
 /**
  * Created by 123 on 2017/9/23.
  */
 
-public class ProgressBean {
+public class ProgressBean extends BmobObject{
 
     private PlanBean plan;
-    private Date createTime;
     private String content;
     private List<String> imageUrls;
 
@@ -20,14 +20,6 @@ public class ProgressBean {
 
     public void setPlan(PlanBean plan) {
         this.plan = plan;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
     }
 
     public String getContent() {

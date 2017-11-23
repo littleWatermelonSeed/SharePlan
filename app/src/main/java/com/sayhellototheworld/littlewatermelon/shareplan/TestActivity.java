@@ -5,9 +5,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.sayhellototheworld.littlewatermelon.shareplan.util.SysUtil;
+import com.sayhellototheworld.littlewatermelon.shareplan.model.bmom.bean.CommentBean;
+import com.sayhellototheworld.littlewatermelon.shareplan.util.BmobExceptionUtil;
 import com.sayhellototheworld.littlewatermelon.shareplan.view.base_activity.BaseStatusActivity;
 
+import java.util.List;
+
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class TestActivity extends BaseStatusActivity implements View.OnClickListener {
@@ -48,7 +54,18 @@ public class TestActivity extends BaseStatusActivity implements View.OnClickList
     }
 
     private void shangchuan2(){
-        Log.i("niyuanjie","颜色URL为：" + SysUtil.getResourceUri(R.color.gray));
+        BmobQuery<CommentBean> query = new BmobQuery<>();
+        query.findObjects(new FindListener<CommentBean>() {
+            @Override
+            public void done(List<CommentBean> list, BmobException e) {
+                if (e == null){
+                    Log.i("niyuanjie","查询成功 长度为：" + list.size());
+                }else {
+                    Log.i("niyuanjie","查询失败");
+                    BmobExceptionUtil.dealWithException(SPApplication.getAppContext(),e);
+                }
+            }
+        });
     }
 
     private void xiazai2(){

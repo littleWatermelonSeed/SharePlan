@@ -6,14 +6,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.sayhellototheworld.littlewatermelon.shareplan.R;
+import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.base_interface.BaseActivityDo;
+import com.sayhellototheworld.littlewatermelon.shareplan.presenter.centerplaza.ControHomeFragment;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.StatusBarUtils;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
-public class HomePageFragment extends Fragment {
+public class HomePageFragment extends Fragment implements BaseActivityDo{
 
     private View mView;
     private LinearLayout parentLayout;
+    private SmartRefreshLayout mRefreshLayout;
+    private ListView listView;
+    private TextView textView_empty;
+
+    private ControHomeFragment chf;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -23,19 +33,39 @@ public class HomePageFragment extends Fragment {
         return mView;
     }
 
-    private void init(){
+    @Override
+    public void init(){
         initWidget();
-        initLayoutMargin();
+        initParam();
+        initShow();
     }
 
-    private void initWidget(){
+    @Override
+    public void initWidget(){
         parentLayout = (LinearLayout)mView.findViewById(R.id.fragment_home_page_parent);
+        mRefreshLayout = (SmartRefreshLayout)mView.findViewById(R.id.fragment_home_refreshLayout);
+        mRefreshLayout.setEnableAutoLoadmore(false);
+        listView = (ListView)mView.findViewById(R.id.fragment_home_listView);
+        textView_empty = (TextView)mView.findViewById(R.id.fragment_home_empty_listView);
     }
 
-    private void initLayoutMargin(){
+    @Override
+    public void initParam() {
+        chf = new ControHomeFragment(getActivity(),this,mRefreshLayout,listView);
+    }
+
+    @Override
+    public void initShow() {
         StatusBarUtils.setLayoutMargin(getActivity(),parentLayout);
     }
 
-
+    public void listEmpty(boolean empty){
+        if (empty){
+            textView_empty.setVisibility(View.VISIBLE);
+            textView_empty.setText("服务器没有数据哟~");
+        }else {
+            textView_empty.setVisibility(View.GONE);
+        }
+    }
 
 }

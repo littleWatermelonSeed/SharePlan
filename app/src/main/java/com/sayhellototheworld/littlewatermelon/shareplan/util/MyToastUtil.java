@@ -14,6 +14,13 @@ public final class MyToastUtil {
     public final static int SHORT = 1;
 
     public static void showToast(String showMessage){
+//        Toast toast = null;
+//        if (toast == null){
+//            toast = new Toast(SPApplication.getAppContext());
+//            toast.setText(showMessage);
+//        }else {
+//            toast.setText(showMessage);
+//        }
         Toast.makeText(SPApplication.getAppContext(),showMessage,Toast.LENGTH_SHORT).show();
     }
 

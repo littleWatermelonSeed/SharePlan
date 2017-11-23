@@ -8,7 +8,7 @@ import java.util.List;
  * Created by 123 on 2017/10/1.
  */
 
-public interface PlanDetailsInitShow {
+public interface PlanDetailsInitDo {
 
     void initShow(TablePlan tablePlan);
     void showComment();

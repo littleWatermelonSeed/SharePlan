@@ -6,36 +6,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center"
     tools:context="com.sayhellototheworld.littlewatermelon.shareplan.EnterActivity">
 
-    <com.sayhellototheworld.littlewatermelon.shareplan.customwidget.LiTopBar
-        android:id="@+id/activity_write_topbar"
-        android:layout_width="match_parent"
-        android:layout_height="100px"
-        app:bodyBackground="@color/white1"
-        app:leftImageSrc="@color/white1"
-        app:leftImageViewWidth="5px"
-        app:leftText="取消"
-        app:leftTextColor="#707070"
-        app:lefttextSize="15px"
-        app:rightImageSrc="@color/white1"
-        app:rightImageViewWidth="5px"
-        app:rightText="提交"
-        app:rightTextColor="#707070"
-        app:rightTextSize="14px"/>
+    <!--<com.sayhellototheworld.littlewatermelon.shareplan.customwidget.LiTopBar-->
+        <!--android:id="@+id/activity_write_topbar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="100px"-->
+        <!--app:bodyBackground="@color/white1"-->
+        <!--app:leftImageSrc="@color/white1"-->
+        <!--app:leftImageViewWidth="5px"-->
+        <!--app:leftText="取消"-->
+        <!--app:leftTextColor="#707070"-->
+        <!--app:lefttextSize="15px"-->
+        <!--app:rightImageSrc="@color/white1"-->
+        <!--app:rightImageViewWidth="5px"-->
+        <!--app:rightText="提交"-->
+        <!--app:rightTextColor="#707070"-->
+        <!--app:rightTextSize="14px"/>-->
 
-    <Button
-        android:id="@+id/test"
+    <!--<Button-->
+        <!--android:id="@+id/test"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="enter"-->
+        <!--android:textAllCaps="false"/>-->
+
+    <!--<Button-->
+        <!--android:id="@+id/test1"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="test"-->
+        <!--android:textAllCaps="false"/>-->
+
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="enter"
-        android:textAllCaps="false"/>
-
-    <Button
-        android:id="@+id/test1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="test"
-        android:textAllCaps="false"/>
+        android:layout_gravity="center"
+        android:src="@drawable/shareplan"/>
 
 </LinearLayout>

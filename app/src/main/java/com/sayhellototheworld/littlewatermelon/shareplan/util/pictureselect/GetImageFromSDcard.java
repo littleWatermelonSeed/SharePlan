@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContentResolverCompat;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -26,32 +28,35 @@ public class GetImageFromSDcard {
             @Override
             public void run() {
                 ContentResolver contentResolver = context.getContentResolver();
-                Cursor cursor = contentResolver.query(uri,new String[]{
+                Cursor cursor = ContentResolverCompat.query(contentResolver,uri,new String[]{
                         MediaStore.Images.Media.DATA,
                         MediaStore.Images.Media.DISPLAY_NAME,
                         MediaStore.Images.Media.DATE_ADDED,
-                        MediaStore.Images.Media._ID,},null,null,MediaStore.Images.Media.DATE_ADDED);
-                List<Image> imageList = new ArrayList<Image>();
+                        MediaStore.Images.Media._ID,},null,null,MediaStore.Images.Media.DATE_ADDED,null);
+                final List<Image> imageList = new ArrayList<>();
                 while (cursor.moveToNext()){
                     String name = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME));
                     String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
                     long time = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media.DATE_ADDED));
                     imageList.add(new Image(path,name,time));
                 }
-
                 int n = 0;
                 for(Image image:imageList){
                     image.setID(n);
                     n++;
                 }
-
                 folderList = getFolder(imageList);
-
-                if(callback != null){
-                    callback.onSuccess(folderList,imageList);
-                }else if(myCallBack != null){
-                    myCallBack.onSuccess(folderList,imageList);
-                }
+                ((FragmentActivity)context).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(callback != null){
+                            callback.onSuccess(folderList,imageList);
+                        }else if(myCallBack != null){
+                            myCallBack.onSuccess(folderList,imageList);
+                        }
+                    }
+                });
+                cursor.close();
 
             }
         }).start();

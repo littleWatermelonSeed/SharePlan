@@ -48,7 +48,7 @@ public class PictureUtil {
     }
 
     public static String getPicNameFromUrl(String url){
-        String picName = null;
+        String picName;
         String[] arr = url.split("/");
         picName = arr[arr.length - 1].replaceAll("\\.","");
         return picName;

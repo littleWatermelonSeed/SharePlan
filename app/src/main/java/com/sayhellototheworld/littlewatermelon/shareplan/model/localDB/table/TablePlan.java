@@ -22,8 +22,17 @@ public class TablePlan extends DataSupport {
     private boolean limit;
     private String location;
     private int statue;
+    private int likes;
     private List<TableImagePath> imagePath = new ArrayList<>();
     private List<TablePlanProgress> progress = new ArrayList<>();
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
 
     public Date getCreateTime() {
         return createTime;
@@ -114,10 +123,15 @@ public class TablePlan extends DataSupport {
     }
 
     public List<TablePlanProgress> getProgress() {
-        return DataSupport.where("tableplan_id = ?", String.valueOf(this.getBaseObjId())).find(TablePlanProgress.class);
+        return DataSupport.where("tableplan_id = ?", String.valueOf(this.getBaseObjId())).order("createTime asc").find(TablePlanProgress.class);
     }
 
     public void setProgress(List<TablePlanProgress> progress) {
         this.progress = progress;
     }
+
+    public long getBaseID(){
+        return getBaseObjId();
+    }
+
 }

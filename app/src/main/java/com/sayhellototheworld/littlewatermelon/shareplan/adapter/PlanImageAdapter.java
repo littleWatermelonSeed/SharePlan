@@ -2,6 +2,7 @@ package com.sayhellototheworld.littlewatermelon.shareplan.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,12 +10,14 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.sayhellototheworld.littlewatermelon.shareplan.R;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.MyToastUtil;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.SysUtil;
+import com.sayhellototheworld.littlewatermelon.shareplan.util.pictureselect.activity.PreviewPlanPicActivity;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.pictureselect.activity.ShowPictureActivity;
+import com.zhy.autolayout.utils.AutoUtils;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -81,15 +84,22 @@ public class PlanImageAdapter extends BaseAdapter {
             viewHolder.imageView_deltete = (ImageView) convertView.findViewById(R.id.adapter_writer_plan_image_deleteImage);
 //            viewHolder.imageView_content.setLayoutParams(params);
             convertView.setTag(viewHolder);
+            AutoUtils.autoSize(convertView);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         viewHolder.imageView_deltete.setVisibility(View.GONE);
-        Glide.with(context)
-                .load(imagePath.get(position))
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .placeholder(R.drawable.gray_background)
-                .into(viewHolder.imageView_content);
+        if (!imagePath.get(position).startsWith("http://")){
+            Log.i("niyuanjie","加载本地图片");
+            Glide.with(context)
+                    .load(new File(imagePath.get(position)))
+                    .into(viewHolder.imageView_content);
+        }else {
+            Log.i("niyuanjie","加载网络图片");
+            Glide.with(context)
+                    .load(imagePath.get(position))
+                    .into(viewHolder.imageView_content);
+        }
         mListen = new WritePlanImageListen(position);
         viewHolder.imageView_content.setOnClickListener(mListen);
         return convertView;
@@ -107,6 +117,7 @@ public class PlanImageAdapter extends BaseAdapter {
             viewHolder.imageView_deltete = (ImageView) convertView.findViewById(R.id.adapter_writer_plan_image_deleteImage);
 //            viewHolder.imageView_content.setLayoutParams(params);
             convertView.setTag(viewHolder);
+            AutoUtils.autoSize(convertView);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
@@ -149,6 +160,7 @@ public class PlanImageAdapter extends BaseAdapter {
                 } else {
                     switch (v.getId()) {
                         case R.id.adapter_writer_plan_image_contentImage:
+                            PreviewPlanPicActivity.startPreviewPlanPicActivity(context,imagePath,position - 1);
                             break;
                         case R.id.adapter_writer_plan_image_deleteImage:
                             imagePath.remove(position - 1);
@@ -157,7 +169,11 @@ public class PlanImageAdapter extends BaseAdapter {
                     }
                 }
             } else {
-
+                switch (v.getId()) {
+                    case R.id.adapter_writer_plan_image_contentImage:
+                        PreviewPlanPicActivity.startPreviewPlanPicActivity(context,imagePath,position);
+                        break;
+                }
             }
         }
     }

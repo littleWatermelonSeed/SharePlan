@@ -24,6 +24,4 @@ public class LocalManageImagePath {
         return imagePathList;
     }
 
-
-
 }

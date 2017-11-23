@@ -4,18 +4,27 @@ import android.content.Context;
 import android.support.v4.app.FragmentActivity;
 
 import com.sayhellototheworld.littlewatermelon.shareplan.model.bmom.bean.PlanBean;
+import com.sayhellototheworld.littlewatermelon.shareplan.model.localDB.table.TableImagePath;
+import com.sayhellototheworld.littlewatermelon.shareplan.model.localDB.table.TablePlan;
+import com.sayhellototheworld.littlewatermelon.shareplan.model.local_file.GetFile;
 import com.sayhellototheworld.littlewatermelon.shareplan.model.thread_manager.JoinToThreadPool;
 import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.centerplaza_interface.SavePlanDo;
+import com.sayhellototheworld.littlewatermelon.shareplan.util.BmobExceptionUtil;
+import com.sayhellototheworld.littlewatermelon.shareplan.util.PictureUtil;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.DownloadFileListener;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.QueryListener;
 import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadBatchListener;
 
 /**
@@ -51,7 +60,7 @@ public class BmobManagePlan {
 
             @Override
             public void onError(int i, String s) {
-
+                done.saveImageFail(s);
             }
         });
     }
@@ -91,6 +100,33 @@ public class BmobManagePlan {
         JoinToThreadPool.joinToSingle(mRunnable);
     }
 
+    public void downLoadPlanImage(String url, final TablePlan tablePlan){
+        final BmobFile planImage = new BmobFile(PictureUtil.getPicNameFromUrl(url) + ".png","", url);
+        final File saveFile = new File(GetFile.getExternalPlanImageFile(), planImage.getFilename());
+        planImage.download(saveFile, new DownloadFileListener() {
+            @Override
+            public void done(String s, BmobException e) {
+                if (e == null){
+                    TableImagePath imagePath = new TableImagePath();
+                    imagePath.setImagePath(s);
+                    List<TableImagePath> list = new ArrayList<TableImagePath>();
+                    list.add(imagePath);
+                    tablePlan.setImagePath(list);
+                    tablePlan.save();
+                    imagePath.save();
+                }else {
+                    BmobExceptionUtil.dealWithException(mContext,e);
+                }
+
+            }
+
+            @Override
+            public void onProgress(Integer integer, long l) {
+
+            }
+        });
+    }
+
     public void queryAllObjectID(int skip, FindListener<PlanBean> findListener){
         BmobQuery<PlanBean> planBeen = new BmobQuery<>();
         planBeen.addWhereEqualTo("user",BmobManageUser.getCurrentUser());
@@ -116,6 +152,45 @@ public class BmobManagePlan {
     public void queryPlanByID(String objectID,QueryListener<PlanBean> listener){
         BmobQuery<PlanBean> planBeen = new BmobQuery<>();
         planBeen.getObject(objectID,listener);
+    }
+
+    public void queryPlanToHome(int skip,FindListener<PlanBean> findListener){
+        BmobQuery<PlanBean> planBean = new BmobQuery<>();
+//        planBeen.addWhereEqualTo("limit",true);
+//        planBeen.setCachePolicy(BmobQuery.CachePolicy.CACHE_ELSE_NETWORK);
+//        planBean.order("-createdAt");
+        planBean.include("user");
+        planBean.setLimit(10);
+        planBean.setSkip(skip);
+        planBean.findObjects(findListener);
+    }
+
+    public void queryPlanToHome(int skip, Date date, FindListener<PlanBean> findListener){
+        BmobQuery<PlanBean> planBeen = new BmobQuery<>();
+        planBeen.addWhereEqualTo("limit",true);
+//        planBeen.addWhereLessThanOrEqualTo("createdAt",new BmobDate(date));
+//        planBeen.order("-createdAt");
+        planBeen.include("user");
+        planBeen.setLimit(10);
+        planBeen.setSkip(skip);
+        planBeen.findObjects(findListener);
+    }
+
+    public void updateLikes(String planObjectID,final int n){
+        PlanBean planBean = new PlanBean();
+        planBean.increment("stars",n);
+        planBean.update(planObjectID, new UpdateListener() {
+            @Override
+            public void done(BmobException e) {
+                if (e == null){
+                    if (n < 0){
+
+                    }
+                }else {
+                    BmobExceptionUtil.dealWithException(mContext,e);
+                }
+            }
+        });
     }
 
 }

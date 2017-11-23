@@ -65,7 +65,6 @@
                 android:layout_height="70px"
                 android:background="@null"
                 android:layout_toRightOf="@+id/activity_register_user_phoneIcon"
-                android:layout_toLeftOf="@+id/activity_register_user_viewLine"
                 android:layout_centerVertical="true"
                 android:textSize="25px"
                 android:inputType="number"

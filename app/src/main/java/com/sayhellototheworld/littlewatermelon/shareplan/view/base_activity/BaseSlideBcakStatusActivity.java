@@ -43,7 +43,8 @@ public class BaseSlideBcakStatusActivity extends BaseStatusActivity {
     }
 
     protected void slideBackDo(){
-
+        String s = "";
+        s.indexOf("as");
     }
 
     @Override

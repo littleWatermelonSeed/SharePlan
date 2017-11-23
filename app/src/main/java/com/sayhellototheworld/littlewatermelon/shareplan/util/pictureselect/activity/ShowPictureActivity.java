@@ -1,10 +1,16 @@
 package com.sayhellototheworld.littlewatermelon.shareplan.util.pictureselect.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.PermissionChecker;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.GridView;
@@ -26,6 +32,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.R.attr.targetSdkVersion;
+import static com.sayhellototheworld.littlewatermelon.shareplan.util.MyToastUtil.showToast;
+
 public class ShowPictureActivity extends BaseNoStatusActivity {
 
     private RelativeLayout bottomLayout;
@@ -41,7 +50,6 @@ public class ShowPictureActivity extends BaseNoStatusActivity {
 
     private boolean chooseAndBack = false;
     private int folderPosition;
-    private Context interContext;
     private int target;
 
     public final static int SHOWPICTURE_REQUESTCODE = 0;
@@ -63,13 +71,68 @@ public class ShowPictureActivity extends BaseNoStatusActivity {
     }
 
     private void init() {
+        getPermission();
         manager = PictureDataManager.getManagerInstance();
         getTarget();
         getWidget();
-        setWidgetListener();
-        setGridViewAdapter();
         MyActivityManager.getDestoryed().addActivityToList(this);
         baseActivityManager.addActivityToUserMap(this,getClass().getSimpleName());
+    }
+
+    private void getPermission(){
+        if (hasPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            readLocalMedia();
+        } else {
+            requestPermission(1, Manifest.permission.READ_EXTERNAL_STORAGE);
+        }
+    }
+
+    protected boolean hasPermission(String permission) {
+        boolean result = true;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (targetSdkVersion >= Build.VERSION_CODES.M) {
+                // targetSdkVersion >= Android M, we can
+                // use Context#checkSelfPermission
+                result = this.checkSelfPermission(permission)
+                        == PackageManager.PERMISSION_GRANTED;
+            } else {
+                // targetSdkVersion < Android M, we have to use PermissionChecker
+                result = PermissionChecker.checkSelfPermission(this, permission)
+                        == PermissionChecker.PERMISSION_GRANTED;
+            }
+        }
+        return result;
+    }
+
+    protected void requestPermission(int code, String... permissions) {
+        ActivityCompat.requestPermissions(this, permissions, code);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 1:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    readLocalMedia();
+                } else {
+                    showToast("读取内存卡权限已被拒绝");
+                }
+                break;
+        }
+    }
+
+    private void readLocalMedia(){
+        GetImageFromSDcard.loadImageForSDCard(this, new GetImageFromSDcard.ImageCallBack() {
+            @Override
+            public void onSuccess(List<Folder> folderList, List<Image> images) {
+                if (folderList != null){
+                    PictureDataManager manager = PictureDataManager.getManagerInstance();
+                    manager.setFolderList(folderList);
+                    setWidgetListener();
+                    setGridViewAdapter();
+                }
+            }
+        });
     }
 
     private void getTarget(){
@@ -78,18 +141,18 @@ public class ShowPictureActivity extends BaseNoStatusActivity {
     }
 
     private void getWidget() {
+        listener = new TextClickListener();
         bottomLayout = (RelativeLayout)findViewById(R.id.activity_show_picture_bottombar);
         backLayout = (LinearLayout) findViewById(R.id.activity_show_picture_backLayout);
         textView_cancle = (TextView) findViewById(R.id.activity_show_picture_cancle);
         textView_preview = (TextView) findViewById(R.id.activity_show_picture_preview);
         textView_choose = (TextView) findViewById(R.id.activity_show_picture_choose);
         gridView = (GridView) findViewById(R.id.activity_show_picture_gridView);
+        textView_cancle.setOnClickListener(listener);
     }
 
     private void setWidgetListener() {
-        listener = new TextClickListener();
         backLayout.setOnClickListener(listener);
-        textView_cancle.setOnClickListener(listener);
         textView_preview.setOnClickListener(listener);
         textView_choose.setOnClickListener(listener);
     }
@@ -108,20 +171,13 @@ public class ShowPictureActivity extends BaseNoStatusActivity {
     }
 
     public static void startShowPictureActivityForResult(final Context context, final int target ) {
-        GetImageFromSDcard.loadImageForSDCard(context, new GetImageFromSDcard.ImageCallBack() {
-            @Override
-            public void onSuccess(List<Folder> folderList, List<Image> images) {
-                PictureDataManager manager = PictureDataManager.getManagerInstance();
-                manager.setFolderList(folderList);
-                Intent intent = new Intent(context, ShowPictureActivity.class);
-                intent.putExtra("target",target);
-                if(target == TARGET_HEAD || target == TARGET_BACKGROUND){
-                    context.startActivity(intent);
-                }else if (target == TARGET_PLAN){
-                    ((FragmentActivity) context).startActivityForResult(intent, SHOWPICTURE_REQUESTCODE);
-                }
-            }
-        });
+        Intent intent = new Intent(context, ShowPictureActivity.class);
+        intent.putExtra("target",target);
+        if(target == TARGET_HEAD || target == TARGET_BACKGROUND){
+            context.startActivity(intent);
+        }else if (target == TARGET_PLAN){
+            ((FragmentActivity) context).startActivityForResult(intent, SHOWPICTURE_REQUESTCODE);
+        }
     }
 
     public static void startShowPictureActivityFromFolderList(Context context,int folderPosition) {

@@ -149,9 +149,15 @@ public class PictureDataManager {
 
     public void clear() {
         if (picManager != null) {
-            folderList.clear();
-            callbackImageList.clear();
-            picManager = null;
+            if (folderList != null){
+                folderList.clear();
+            }
+            if (callbackImageList != null){
+                callbackImageList.clear();
+            }
+            if (picManager != null){
+                picManager = null;
+            }
             GridAdapter.initChoosed();
         }
     }

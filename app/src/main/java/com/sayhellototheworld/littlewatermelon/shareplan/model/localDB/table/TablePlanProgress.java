@@ -12,9 +12,27 @@ import java.util.List;
 
 public class TablePlanProgress extends DataSupport {
 
+    private String objectID;
     private Date createTime;
     private String content;
-    private List<TableImagePath> mImagePaths = new ArrayList<>();
+    private TablePlan mTablePlan;
+    private List<TableProgressImagePath> mImagePaths = new ArrayList<>();
+
+    public TablePlan getTablePlan() {
+        return mTablePlan;
+    }
+
+    public void setTablePlan(TablePlan tablePlan) {
+        mTablePlan = tablePlan;
+    }
+
+    public String getObjectID() {
+        return objectID;
+    }
+
+    public void setObjectID(String objectID) {
+        this.objectID = objectID;
+    }
 
     public Date getCreateTime() {
         return createTime;
@@ -32,11 +50,11 @@ public class TablePlanProgress extends DataSupport {
         this.content = content;
     }
 
-    public List<TableImagePath> getImagePaths() {
-        return mImagePaths;
+    public List<TableProgressImagePath> getImagePaths() {
+        return DataSupport.where("tableplanprogress_id = ?", String.valueOf(this.getBaseObjId())).find(TableProgressImagePath.class);
     }
 
-    public void setImagePaths(List<TableImagePath> imagePaths) {
+    public void setImagePaths(List<TableProgressImagePath> imagePaths) {
         mImagePaths = imagePaths;
     }
 }

@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.sayhellototheworld.littlewatermelon.shareplan.R;
+import com.sayhellototheworld.littlewatermelon.shareplan.customwidget.DialogConfirm;
+import com.sayhellototheworld.littlewatermelon.shareplan.model.bmom.data_manager.BmobManageUser;
 import com.sayhellototheworld.littlewatermelon.shareplan.my_interface.base_interface.BaseActivityDo;
 import com.sayhellototheworld.littlewatermelon.shareplan.util.LayoutBackgroundUtil;
 import com.sayhellototheworld.littlewatermelon.shareplan.view.base_activity.BaseStatusActivity;
@@ -20,6 +22,7 @@ import com.sayhellototheworld.littlewatermelon.shareplan.view.centerplaza_view.c
 import com.sayhellototheworld.littlewatermelon.shareplan.view.centerplaza_view.centerplaza_fragment.MessageFragment;
 import com.sayhellototheworld.littlewatermelon.shareplan.view.centerplaza_view.centerplaza_fragment.PlanFragment;
 import com.sayhellototheworld.littlewatermelon.shareplan.view.centerplaza_view.centerplaza_fragment.UserFragment;
+import com.sayhellototheworld.littlewatermelon.shareplan.view.user_view.LoginActivity;
 
 public class CenterPlazaActivity extends BaseStatusActivity implements View.OnClickListener,BaseActivityDo{
 
@@ -111,7 +114,23 @@ public class CenterPlazaActivity extends BaseStatusActivity implements View.OnCl
                 }
                 break;
             case R.id.activity_center_plaza_bottomBar_write:
-                WriteActivity.startWriteActivity(this);
+                if (BmobManageUser.getCurrentUser() != null){
+                    WriteActivity.startWriteActivity(this);
+                }else {
+                    DialogConfirm.newInstance("提示", "你还没有登录，是否马上前去登录？", new DialogConfirm.CancleAndOkDo() {
+                        @Override
+                        public void cancle() {
+
+                        }
+
+                        @Override
+                        public void ok() {
+                            LoginActivity.startLoginActivity(CenterPlazaActivity.this);
+                        }
+                    }).setMargin(60)
+                            .setOutCancel(false)
+                            .show(getSupportFragmentManager());
+                }
                 break;
         }
     }

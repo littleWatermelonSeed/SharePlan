@@ -18,6 +18,7 @@
     <color name="black">#030303</color>
     <color name="black1">#8f8f8f</color>
     <color name="green">#afdab9</color>
+    <color name="green2">#28ca55</color>
     <color name="centerPlazaBottomBar_textColor2">#67bcf7</color>
     <color name="centerPlazaBottomBar_textColor">#78BFBF</color>
     <color name="underLine">#78BFBF</color>
@@ -34,4 +35,6 @@
     <color name="plan_text_statue_ing">#96bc00</color>
     <color name="plan_text_statue_finished">#afdab9</color>
     <color name="plan_text_statue_unfinished">#fc1b1b</color>
+    <color name="finish">#75b7f9</color>
+    <color name="liked">#f3ca7e</color>
 </resources>
